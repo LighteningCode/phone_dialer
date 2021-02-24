@@ -5,6 +5,19 @@ import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-nati
 let device_width = Dimensions.get("window").width;
 let device_height = Dimensions.get("window").height;
 
+
+function PhoneButton({ children }) {
+  return (
+    <>
+      <TouchableOpacity
+        onPress={() => console.log("Hello")}
+        style={styles.button}>
+        {children}
+      </TouchableOpacity>
+    </>
+  )
+}
+
 export default function App() {
   return (
     <View style={styles.container}>
@@ -12,26 +25,23 @@ export default function App() {
 
       <View style={styles.dialer_view}>
 
-        <TouchableOpacity
-          onPress={() => console.log("Hello")}
-          style={styles.button}>
+        <PhoneButton>
           <Text style={{ color: "white", fontSize: 30 }}>1</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => console.log("Hello")}
-          style={styles.button}>
-          <Text style={{ color: "white", fontSize: 30 }}>1</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => console.log("Hello")}
-          style={styles.button}>
-          <Text style={{ color: "white", fontSize: 30 }}>1</Text>
-        </TouchableOpacity>
+        </PhoneButton>
+
+        <PhoneButton>
+          <Text style={{ color: "white", fontSize: 30 }}>2</Text>
+        </PhoneButton>
+
+        <PhoneButton>
+          <Text style={{ color: "white", fontSize: 30 }}>3</Text>
+        </PhoneButton>
 
       </View>
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {
