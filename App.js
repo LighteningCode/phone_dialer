@@ -26,7 +26,7 @@ function CustomPhoneButton({ children, input, _onPress, custom_style = {} }) {
   return (
     <TouchableOpacity
       onPress={() => (typeof _onPress === 'function') ? _onPress(input) : ""}
-      style={{...styles.button,...custom_style}}>
+      style={{ ...styles.button, ...custom_style }}>
       {children}
     </TouchableOpacity>
   )
@@ -65,13 +65,15 @@ export default function App() {
       <View style={{ marginTop: 50, backgroundColor: "blue", height: device_height }}>
 
         <View style={{ marginTop: 50, paddingHorizontal: 20, paddingVertical: 50, marginBottom: 10, backgroundColor: "red" }}>
-          <Text style={{ fontSize: 50, textAlign: "center" }}>{dial}</Text>
+          <View style={{ height: 50 }}>
+            <Text style={{ fontSize: 50, textAlign: "center" }}>{dial}</Text>
+          </View>
         </View>
 
         <View style={{ flexDirection: 'column', height: 450, paddingHorizontal: 150, backgroundColor: "yellow" }}>
 
           <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
-            <PhoneButton input={1} _onPress={handlePress}  number={1} />
+            <PhoneButton input={1} _onPress={handlePress} number={1} />
 
             <PhoneButton input={2} _onPress={handlePress} subtext="ABC" number={2} />
 
@@ -83,7 +85,7 @@ export default function App() {
 
             <PhoneButton input={5} _onPress={handlePress} subtext="JKL" number={5} />
 
-            <PhoneButton input={6} _onPress={handlePress} subtext="MNO"  number={6} />
+            <PhoneButton input={6} _onPress={handlePress} subtext="MNO" number={6} />
           </View>
 
           <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
@@ -103,18 +105,24 @@ export default function App() {
           </View>
 
           <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
-            <CustomPhoneButton custom_style={{backgroundColor: 'rgba(52, 52, 52, 0.0)'}}>
-            </CustomPhoneButton>
+            <CustomPhoneButton custom_style={{ backgroundColor: 'rgba(52, 52, 52, 0.0)' }} />
 
-            <CustomPhoneButton custom_style={{ backgroundColor: '#00e600'}}>
+            <CustomPhoneButton custom_style={{ backgroundColor: '#00e600' }}>
               <Text style={{ color: "white", fontSize: 30 }}>Call</Text>
             </CustomPhoneButton>
 
-            <CustomPhoneButton _onPress={handleDelete}>
-              <Text style={{ color: "black", fontSize: 30 }}>Del</Text>
-            </CustomPhoneButton>
-          </View>
 
+            {
+              (dial === "") ?
+                <CustomPhoneButton custom_style={{ backgroundColor: 'rgba(52, 52, 52, 0.0)' }} />
+                :
+                <CustomPhoneButton _onPress={handleDelete}>
+                  <Text style={{ color: "black", fontSize: 30 }}>Del</Text>
+                </CustomPhoneButton>
+            }
+
+
+          </View>
         </View>
 
       </View>
@@ -145,7 +153,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: '600'
   },
-  dialer_subtext:{
+  dialer_subtext: {
     color: "#2b2b2b",
     fontSize: 15,
   },
