@@ -64,9 +64,20 @@ export default function App() {
 
       <View style={{ marginTop: 50, backgroundColor: "blue", height: device_height }}>
 
-        <View style={{ marginTop: 50, paddingHorizontal: 20, paddingVertical: 50, marginBottom: 10, backgroundColor: "red" }}>
+        <View style={{ marginTop: 50, paddingHorizontal: 20, paddingVertical: 30, marginBottom: 10, backgroundColor: "red" }}>
           <View style={{ height: 50 }}>
             <Text style={{ fontSize: 50, textAlign: "center" }}>{dial}</Text>
+          </View>
+
+          <View style={{ height: 20 }}>
+
+            {
+              (dial === "") ?
+                <Text></Text>
+                :
+                <Text style={{ textAlign: 'center', fontSize: 20, color: '#0288f5' }}>Add contact</Text>
+            }
+
           </View>
         </View>
 
