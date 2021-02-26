@@ -6,21 +6,27 @@ let device_width = Dimensions.get("window").width;
 let device_height = Dimensions.get("window").height;
 
 
-function PhoneButton({input, _onPress,number }) {
+function PhoneButton({ input, _onPress, number, subtext }) {
   return (
     <TouchableOpacity
       onPress={() => (typeof _onPress === 'function') ? _onPress(input) : ""}
       style={styles.button}>
-        <Text style={styles.dialer_text}>{number}</Text>
+      <Text style={styles.dialer_text}>{number}</Text>
+
+      <View>
+        <Text style={styles.dialer_subtext}>
+          {subtext}
+        </Text>
+      </View>
     </TouchableOpacity>
   )
 }
 
-function CustomPhoneButton({ children, input, _onPress }) {
+function CustomPhoneButton({ children, input, _onPress, custom_style = {} }) {
   return (
     <TouchableOpacity
       onPress={() => (typeof _onPress === 'function') ? _onPress(input) : ""}
-      style={styles.button}>
+      style={{...styles.button,...custom_style}}>
       {children}
     </TouchableOpacity>
   )
@@ -56,50 +62,52 @@ export default function App() {
     <View style={styles.container}>
       <StatusBar style="auto" />
 
-      <View style={{ marginTop: 50, backgroundColor:"blue",height:device_height }}>
+      <View style={{ marginTop: 50, backgroundColor: "blue", height: device_height }}>
 
-        <View style={{ marginTop: 50, paddingHorizontal: 20,paddingVertical: 50,marginBottom:10, backgroundColor:"red" }}>
+        <View style={{ marginTop: 50, paddingHorizontal: 20, paddingVertical: 50, marginBottom: 10, backgroundColor: "red" }}>
           <Text style={{ fontSize: 50, textAlign: "center" }}>{dial}</Text>
         </View>
 
-        <View style={{ flexDirection: 'column', height: 450, paddingHorizontal: 150, backgroundColor:"yellow" }}>
+        <View style={{ flexDirection: 'column', height: 450, paddingHorizontal: 150, backgroundColor: "yellow" }}>
 
           <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
-            <PhoneButton input={1} _onPress={handlePress} number={1} />
+            <PhoneButton input={1} _onPress={handlePress}  number={1} />
 
-            <PhoneButton input={2} _onPress={handlePress} number={2} />
+            <PhoneButton input={2} _onPress={handlePress} subtext="ABC" number={2} />
 
-            <PhoneButton input={3} _onPress={handlePress} number={3} />
+            <PhoneButton input={3} _onPress={handlePress} subtext="DEF" number={3} />
           </View>
 
           <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
-            <PhoneButton input={4} _onPress={handlePress} number={4} />
+            <PhoneButton input={4} _onPress={handlePress} subtext="GHI" number={4} />
 
-            <PhoneButton input={5} _onPress={handlePress} number={5} />
+            <PhoneButton input={5} _onPress={handlePress} subtext="JKL" number={5} />
 
-            <PhoneButton input={6} _onPress={handlePress} number={6} />
+            <PhoneButton input={6} _onPress={handlePress} subtext="MNO"  number={6} />
           </View>
 
           <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
-            <PhoneButton input={7} _onPress={handlePress} number={7} />
+            <PhoneButton input={7} _onPress={handlePress} subtext="PQRS" number={7} />
 
-            <PhoneButton input={8} _onPress={handlePress} number={8} />
+            <PhoneButton input={8} _onPress={handlePress} subtext="TUV" number={8} />
 
-            <PhoneButton input={9} _onPress={handlePress} number={9} />
+            <PhoneButton input={9} _onPress={handlePress} subtext="WXYZ" number={9} />
           </View>
 
           <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
             <PhoneButton input={"*"} _onPress={handlePress} number={"*"} />
 
-            <PhoneButton input={0} _onPress={handlePress} number={0} />
+            <PhoneButton input={0} _onPress={handlePress} subtext="+" number={0} />
 
             <PhoneButton input={"#"} _onPress={handlePress} number={"#"} />
           </View>
 
           <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
+            <CustomPhoneButton custom_style={{backgroundColor: 'rgba(52, 52, 52, 0.0)'}}>
+            </CustomPhoneButton>
 
-            <CustomPhoneButton>
-              <Text style={{ color: "black", fontSize: 30 }}>Call</Text>
+            <CustomPhoneButton custom_style={{ backgroundColor: '#00e600'}}>
+              <Text style={{ color: "white", fontSize: 30 }}>Call</Text>
             </CustomPhoneButton>
 
             <CustomPhoneButton _onPress={handleDelete}>
@@ -132,10 +140,14 @@ const styles = StyleSheet.create({
     height: 75,
     borderRadius: 1200,
   },
-  dialer_text:{
+  dialer_text: {
     color: "#2b2b2b",
     fontSize: 30,
     fontWeight: '600'
+  },
+  dialer_subtext:{
+    color: "#2b2b2b",
+    fontSize: 15,
   },
   dialer_view: {
     flex: 1,
