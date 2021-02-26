@@ -1,6 +1,12 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useRef, useState } from 'react';
 import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
+
+const Tab = createBottomTabNavigator()
+
 
 let device_width = Dimensions.get("window").width;
 let device_height = Dimensions.get("window").height;
@@ -32,8 +38,7 @@ function CustomPhoneButton({ children, input, _onPress, custom_style = {} }) {
   )
 }
 
-export default function App() {
-
+function KeyPad() {
   const [dial, setDial] = useState('')
   const initailMount = useRef(true)
 
@@ -62,9 +67,9 @@ export default function App() {
     <View style={styles.container}>
       <StatusBar style="auto" />
 
-      <View style={{ marginTop: 50, backgroundColor: "blue", height: device_height }}>
+      <View style={{ marginTop: 50, height: device_height }}>
 
-        <View style={{ marginTop: 50, paddingHorizontal: 20, paddingVertical: 30, marginBottom: 10, backgroundColor: "red" }}>
+        <View style={{ marginTop: 50, paddingHorizontal: 20, paddingVertical: 30, marginBottom: 10 }}>
           <View style={{ height: 50 }}>
             <Text style={{ fontSize: 50, textAlign: "center" }}>{dial}</Text>
           </View>
@@ -81,7 +86,7 @@ export default function App() {
           </View>
         </View>
 
-        <View style={{ flexDirection: 'column', height: 450, paddingHorizontal: 150, backgroundColor: "yellow" }}>
+        <View style={{ flexDirection: 'column', height: 450, paddingHorizontal: 150 }}>
 
           <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
             <PhoneButton input={1} _onPress={handlePress} number={1} />
@@ -119,7 +124,7 @@ export default function App() {
             <CustomPhoneButton custom_style={{ backgroundColor: 'rgba(52, 52, 52, 0.0)' }} />
 
             <CustomPhoneButton custom_style={{ backgroundColor: '#00e600' }}>
-              <Text style={{ color: "white", fontSize: 30 }}>Call</Text>
+              <FontAwesome5 name={"phone-alt"} color="white" size={30} />
             </CustomPhoneButton>
 
 
@@ -127,8 +132,8 @@ export default function App() {
               (dial === "") ?
                 <CustomPhoneButton custom_style={{ backgroundColor: 'rgba(52, 52, 52, 0.0)' }} />
                 :
-                <CustomPhoneButton _onPress={handleDelete}>
-                  <Text style={{ color: "black", fontSize: 30 }}>Del</Text>
+                <CustomPhoneButton _onPress={handleDelete} custom_style={{ backgroundColor: 'rgba(52, 52, 52, 0.0)' }}>
+                  <Ionicons name="backspace" size={30} color="gray" />
                 </CustomPhoneButton>
             }
 
@@ -139,6 +144,45 @@ export default function App() {
       </View>
 
     </View>
+  );
+}
+
+function Contacts() {
+  return (
+    <View>
+      <Text>hello</Text>
+    </View>
+  )
+}
+
+
+export default function App() {
+
+  return (
+    <NavigationContainer>
+      <Tab.Navigator screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
+
+          if (route.name === 'keypad') {
+            iconName = focused
+              ? 'keypad'
+              : 'keypad-outline'
+          } else if (route.name === 'contacts') {
+            iconName = focused
+              ? 'people'
+              : 'people-sharp'
+          }
+
+          return <Ionicons name={iconName} size={size} color={color} />;
+        },
+      })}
+
+      >
+        <Tab.Screen name="keypad" component={KeyPad} />
+        <Tab.Screen name="contacts" component={Contacts} />
+      </Tab.Navigator>
+    </NavigationContainer >
   );
 }
 
