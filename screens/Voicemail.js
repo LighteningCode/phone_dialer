@@ -7,9 +7,20 @@ let device_height = Dimensions.get("window").height;
 
 function VoiceMail() {
     return (
-        <View>
+        <View style={{ ...styles.container, paddingTop: 80 }}>
             <StatusBar style="auto" />
-            <Text>hello</Text>
+
+            <View style={{padding: 10}}>
+                <Text style={{ fontSize: 35, fontWeight: 'bold' }}>VoiceMail</Text>
+            </View>
+
+            <View style={{ ...styles.voicemail_content }}>
+
+                <TouchableOpacity style={styles.voicemail_btn}>
+                    <Text style={{textAlign: 'center', color:'#878787' }}>Call voicemail</Text>
+                </TouchableOpacity>
+
+            </View>
         </View>
     )
 }
@@ -18,6 +29,22 @@ function VoiceMail() {
 const styles = StyleSheet.create({
     container: {
         height: device_height
+    },
+    voicemail_content: {
+        height: device_height * 0.70,
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'center',
+    },
+    voicemail_btn: {
+        padding: 10,
+        borderColor: "#b0b0b0",
+        borderWidth: 1.5,
+        borderRadius: 5,
+        width: 150,
+        height: 40,
+        justifyContent: 'center',
+        alignSelf: 'center'
     },
     button: {
         alignItems: 'center',
