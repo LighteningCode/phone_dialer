@@ -7,6 +7,24 @@ import { TextInput } from 'react-native-gesture-handler';
 let device_width = Dimensions.get("window").width;
 let device_height = Dimensions.get("window").height;
 
+
+function SectionListItem({ item }) {
+    return (
+        <View style={{ ...styles.item, flexDirection: 'row', justifyContent: 'start' }}>
+            <Text style={{ alignSelf: 'center' }}>{item}</Text>
+        </View>
+    )
+}
+
+function SectionHeader({ section }) {
+    return (
+        <View style={{ flexDirection: 'row', justifyContent: 'start', ...styles.sectionHeader }}>
+            <Text style={{ alignSelf: 'center',fontWeight: '800' }}>{section.title}</Text>
+        </View>
+    )
+}
+
+
 function Contacts() {
     return (
         <SafeAreaView style={{ ...styles.container, width: device_width, height: device_height, flexDirection: 'column' }}>
@@ -39,13 +57,10 @@ function Contacts() {
                     { title: "D", data: ["Delvis", "Declan", "Dennis"] },
                     { title: "J", data: ["Jermiah", "Jerry", "Jennifer"] },
                 ]}
-                renderItem={({ item }) => <Text style={styles.item}>{item}</Text>}
-                renderSectionHeader={({ section }) => <Text style={styles.sectionHeader}>{section.title}</Text>}
+                renderItem={({ item }) => <SectionListItem key={`item${item}`} item={item} />}
+                renderSectionHeader={({ section }) => <SectionHeader key={`section${section}`} section={section} />}
 
             />
-
-
-
 
         </SafeAreaView>
     )
@@ -74,14 +89,19 @@ const styles = StyleSheet.create({
         paddingRight: 10,
         paddingBottom: 2,
         fontSize: 14,
+        height: 25,
         fontWeight: 'bold',
-        backgroundColor: 'rgba(247,247,247,1.0)',
+        color: "black",
+        backgroundColor: '#d4d4d4',
     },
     item: {
-        backgroundColor: "",
-        padding: 10,
+        backgroundColor: "rgba(247,247,247,1.0)",
         fontSize: 18,
-        height: 44,
+        height: 40,
+        paddingHorizontal: 10,
+        marginHorizontal: 10,
+        borderColor: "#e3e3e3",
+        borderBottomWidth: 1.5
     },
 });
 
