@@ -78,6 +78,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(247,247,247,1.0)',
     },
     item: {
+        backgroundColor: "",
         padding: 10,
         fontSize: 18,
         height: 44,

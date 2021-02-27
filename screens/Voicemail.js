@@ -1,17 +1,18 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useRef, useState } from 'react';
-import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Dimensions, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 let device_width = Dimensions.get("window").width;
 let device_height = Dimensions.get("window").height;
 
 function VoiceMail() {
     return (
-        <View style={{ ...styles.container, paddingTop: 80 }}>
+        <SafeAreaView style={{ ...styles.container, paddingTop: 80 }}>
             <StatusBar style="auto" />
+        
 
             <View style={{padding: 10}}>
-                <Text style={{ fontSize: 35, fontWeight: 'bold' }}>VoiceMail</Text>
+                <Text style={{ fontSize: 35, fontWeight: 'bold' }}>Voicemail</Text>
             </View>
 
             <View style={{ ...styles.voicemail_content }}>
@@ -21,7 +22,7 @@ function VoiceMail() {
                 </TouchableOpacity>
 
             </View>
-        </View>
+        </SafeAreaView>
     )
 }
 

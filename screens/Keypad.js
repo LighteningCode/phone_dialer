@@ -7,6 +7,7 @@ import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
 
 
 
+
 let device_width = Dimensions.get("window").width;
 let device_height = Dimensions.get("window").height;
 
@@ -29,8 +30,11 @@ function PhoneButton({ input, _onPress, number, subtext }) {
 
 
 function CustomPhoneButton({ children, input, _onPress, custom_style = {} }) {
+    
+
     return (
         <TouchableOpacity
+            onLongPress={() => (typeof _onPress === 'function') ? _onPress(input) : ""}
             onPress={() => (typeof _onPress === 'function') ? _onPress(input) : ""}
             style={{ ...styles.button, ...custom_style }}>
             {children}
