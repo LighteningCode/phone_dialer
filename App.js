@@ -5,6 +5,10 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
 import KeyPad from './screens/Keypad';
+import Contacts from './screens/Contacts';
+import Favorites from './screens/Favorites';
+import VoiceMail from './screens/Voicemail';
+import Recents from './screens/Recents';
 
 
 
@@ -14,41 +18,6 @@ const Tab = createBottomTabNavigator()
 let device_width = Dimensions.get("window").width;
 let device_height = Dimensions.get("window").height;
 
-
-
-
-
-function Contacts() {
-  return (
-    <View>
-      <Text>hello</Text>
-    </View>
-  )
-}
-
-function Favorites() {
-  return (
-    <View>
-      <Text>hello</Text>
-    </View>
-  )
-}
-
-function VoiceMail() {
-  return (
-    <View style={{backgroundColor:"red"}}>
-      <Text>hello</Text>
-    </View>
-  )
-}
-
-function Recents() {
-  return (
-    <View>
-      <Text>hello</Text>
-    </View>
-  )
-}
 
 
 export default function App() {
