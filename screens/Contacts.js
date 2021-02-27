@@ -59,7 +59,6 @@ function Contacts() {
                 ]}
                 renderItem={({ item }) => <SectionListItem key={`item${item}`} item={item} />}
                 renderSectionHeader={({ section }) => <SectionHeader key={`section${section}`} section={section} />}
-
             />
 
         </SafeAreaView>

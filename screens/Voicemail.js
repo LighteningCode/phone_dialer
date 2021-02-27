@@ -11,7 +11,7 @@ function VoiceMail() {
             <StatusBar style="auto" />
         
 
-            <View style={{padding: 10}}>
+            <View style={{padding: 10,marginTop: 20}}>
                 <Text style={{ fontSize: 35, fontWeight: 'bold' }}>Voicemail</Text>
             </View>
 
@@ -33,7 +33,6 @@ const styles = StyleSheet.create({
     },
     voicemail_content: {
         height: device_height * 0.70,
-        flex: 1,
         flexDirection: 'column',
         justifyContent: 'center',
     },
@@ -43,7 +42,7 @@ const styles = StyleSheet.create({
         borderWidth: 1.5,
         borderRadius: 5,
         width: 150,
-        height: 40,
+        height: 35,
         justifyContent: 'center',
         alignSelf: 'center'
     },
