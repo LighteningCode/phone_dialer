@@ -29,12 +29,25 @@ function PhoneButton({ input, _onPress, number, subtext }) {
 }
 
 
-function CustomPhoneButton({ children, input, _onPress, custom_style = {} }) {
-    
+function CustomPhoneButton({ children, input, _onPress, _longPress,_onPressOut, custom_style = {} }) {
+
+    const initialMount = useRef(true)
+
+    useEffect(() => {
+        if (initialMount.current) {
+            initialMount.current = false
+        } else {
+            // handle refreshes here
+        }
+    }, [initialMount,input])
+
+
+
 
     return (
         <TouchableOpacity
-            onLongPress={() => (typeof _onPress === 'function') ? _onPress(input) : ""}
+            onLongPress={() => (typeof _longPress === 'function') ? _longPress() : ""}
+            onPressOut={() => (typeof _onPressOut === 'function') ? _onPressOut() : ""}
             onPress={() => (typeof _onPress === 'function') ? _onPress(input) : ""}
             style={{ ...styles.button, ...custom_style }}>
             {children}
@@ -44,8 +57,9 @@ function CustomPhoneButton({ children, input, _onPress, custom_style = {} }) {
 
 
 function KeyPad() {
-    const [dial, setDial] = useState('')
+    const [dial, setDial] = useState({number:''})
     const initailMount = useRef(true)
+    const deleteTimer = useRef(null)
 
     useEffect(() => {
         if (initailMount.current) {
@@ -55,18 +69,34 @@ function KeyPad() {
             // refresh
         }
 
-    }, [dial])
+    }, [dial,deleteTimer])
 
     const handlePress = (input) => {
-        const newDial = dial + input
-        setDial(newDial)
+        const newDial = dial.number + input
+        setDial({number: newDial})
     }
 
     const handleDelete = () => {
-        const s = dial;
-        const newDial = s.substr(0, s.length - 1)
-        setDial(newDial)
+        setDial(prevDial => ({number: prevDial.number.substr(0, prevDial.number.length - 1)}))
+        console.log("wipe wipe")
     }
+
+    const deleteRepeat = () => {
+        console.log("Deleting...")
+        deleteTimer.current = setInterval(() => {
+            // keep deleting here
+            handleDelete()
+            console.log(dial.number)
+        }, 200);
+    }
+
+    const stopDeleting = () => {
+        // stop the deleting
+        console.log("Has stopped deleting")
+        clearInterval(deleteTimer.current)
+    }
+
+
 
     return (
         <View style={styles.container}>
@@ -76,13 +106,13 @@ function KeyPad() {
 
                 <View style={{ marginTop: 50, paddingHorizontal: 20, paddingVertical: 30, marginBottom: 10 }}>
                     <View style={{ height: 50 }}>
-                        <Text style={{ fontSize: 50, textAlign: "center" }}>{dial}</Text>
+                        <Text style={{ fontSize: 50, textAlign: "center" }}>{dial.number}</Text>
                     </View>
 
                     <View style={{ height: 20 }}>
 
                         {
-                            (dial === "") ?
+                            (dial.number === "") ?
                                 <Text></Text>
                                 :
                                 <Text style={{ textAlign: 'center', fontSize: 20, color: '#0288f5' }}>Add contact</Text>
@@ -134,10 +164,10 @@ function KeyPad() {
 
 
                         {
-                            (dial === "") ?
+                            (dial.number === "") ?
                                 <CustomPhoneButton custom_style={{ backgroundColor: 'rgba(52, 52, 52, 0.0)' }} />
                                 :
-                                <CustomPhoneButton _onPress={handleDelete} custom_style={{ backgroundColor: 'rgba(52, 52, 52, 0.0)' }}>
+                                <CustomPhoneButton _onPress={handleDelete} _longPress={deleteRepeat} _onPressOut={stopDeleting} custom_style={{ backgroundColor: 'rgba(52, 52, 52, 0.0)' }}>
                                     <Ionicons name="backspace" size={30} color="gray" />
                                 </CustomPhoneButton>
                         }
