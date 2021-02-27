@@ -155,32 +155,77 @@ function Contacts() {
   )
 }
 
+function Favorites() {
+  return (
+    <View>
+      <Text>hello</Text>
+    </View>
+  )
+}
+
+function VoiceMail() {
+  return (
+    <View style={{backgroundColor:"red"}}>
+      <Text>hello</Text>
+    </View>
+  )
+}
+
+function Recents() {
+  return (
+    <View>
+      <Text>hello</Text>
+    </View>
+  )
+}
+
 
 export default function App() {
 
   return (
     <NavigationContainer>
-      <Tab.Navigator screenOptions={({ route }) => ({
+      <Tab.Navigator initialRouteName={"Keypad"} screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
 
-          if (route.name === 'keypad') {
+          if (route.name === 'Keypad') {
             iconName = focused
               ? 'keypad'
-              : 'keypad-outline'
-          } else if (route.name === 'contacts') {
+              : 'keypad'
+              return <Ionicons name={iconName} size={size} color={color} />;
+          } else if (route.name === 'Contacts') {
             iconName = focused
               ? 'people'
               : 'people-sharp'
+              return <Ionicons name={iconName} size={size} color={color} />;
+          } else if (route.name === 'Recents') {
+            iconName = focused
+              ? 'clock'
+              : 'clock'
+              return <FontAwesome5 name={iconName} size={size} color={color} />;
+          }  else if (route.name === 'Voicemail') {
+            iconName = focused
+              ? 'voicemail'
+              : 'voicemail'
+              return <FontAwesome5 name={iconName} size={size} color={color} />;
+          } else if (route.name === 'Favorites') {
+            iconName = focused
+              ? 'star'
+              : 'star'
+              return <Ionicons name={iconName} size={size} color={color} />;
           }
 
-          return <Ionicons name={iconName} size={size} color={color} />;
+
+         
         },
       })}
 
       >
-        <Tab.Screen name="keypad" component={KeyPad} />
-        <Tab.Screen name="contacts" component={Contacts} />
+        <Tab.Screen name="Favorites" component={Favorites} />
+        <Tab.Screen name="Recents" component={Recents} />
+        <Tab.Screen name="Keypad" component={KeyPad} />
+        <Tab.Screen name="Contacts" component={Contacts} />
+        <Tab.Screen name="Voicemail" component={VoiceMail} />
       </Tab.Navigator>
     </NavigationContainer >
   );
@@ -195,7 +240,7 @@ const styles = StyleSheet.create({
   button: {
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#e8e8e8',
+    backgroundColor: '#e0e0e0',
     fontWeight: 'bold',
     padding: 5,
     margin: 10,
