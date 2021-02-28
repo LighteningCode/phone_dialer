@@ -50,7 +50,7 @@ function AllRecents() {
                     </View>
                 </View>
 
-                <View style={{ paddingLeft: 20 }}>
+                <View style={{ paddingLeft: 20, borderBottomWidth: 1, borderColor: "#d1d1d1" }}>
                     <Text style={{ fontSize: 40, fontWeight: '700' }}>Recents</Text>
                 </View>
                 <FlatList
@@ -87,16 +87,14 @@ function MissedRecents() {
                     </View>
                 </View>
 
-                <View style={{ paddingLeft: 20 }}>
+                <View style={{ paddingLeft: 20, borderBottomWidth: 1, borderColor: "#d1d1d1" }}>
                     <Text style={{ fontSize: 40, fontWeight: '700' }}>Recents</Text>
                 </View>
                 <FlatList
                     data={[
-                        { key: 'Devin', time: "12:59pm", called: false, missed: false },
-                        { key: 'Dan', time: "12:59pm", called: false, missed: false },
-                        { key: 'Dominic', time: "12:59pm", called: false, missed: false },
-                        { key: 'Jackson', time: "12:59pm", called: false, missed: false },
-                        { key: 'James', time: "12:59pm", called: false, missed: false },
+                        { key: 'Devin', time: "12:59pm", called: false, missed: true },
+                        { key: 'Dan', time: "12:59pm", called: false, missed: true },
+                        { key: 'Dominic', time: "12:59pm", called: false, missed: true },
                     ]}
                     renderItem={({ item }) => <RecentListItem item={item} />}
                 />
