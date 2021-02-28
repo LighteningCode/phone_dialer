@@ -2,9 +2,12 @@ import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useRef, useState } from 'react';
 import { Dimensions, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, FlatList } from 'react-native';
 import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 
 let device_width = Dimensions.get("window").width;
 let device_height = Dimensions.get("window").height;
+
+const Tab = createMaterialTopTabNavigator()
 
 
 function RecentListItem({ item }) {
@@ -27,7 +30,7 @@ function RecentListItem({ item }) {
     )
 }
 
-function Recents() {
+function AllRecents() {
     return (
         <SafeAreaView style={{ ...styles.container }}>
             <StatusBar style="auto" />
@@ -38,9 +41,9 @@ function Recents() {
                         <View style={{ alignSelf: 'center', flex: 1, alignItems: 'flex-end' }}>
                         </View>
                         <View style={{ alignSelf: 'center', flex: 1 }}>
-                            
+
                         </View>
-                        <Text style={{ fontSize: 20, alignSelf: 'flex-end', color: "#3385ff", textAlign:'right',flex: 1 }}>Edit</Text>
+                        <Text style={{ fontSize: 20, alignSelf: 'flex-end', color: "#3385ff", textAlign: 'right', flex: 1 }}>Edit</Text>
                     </View>
                 </View>
 
@@ -59,9 +62,25 @@ function Recents() {
                 />
 
             </View>
-
-
         </SafeAreaView>
+    )
+}
+
+function MissedRecents(){
+    return(
+        <SafeAreaView style={{ ...styles.container }}>
+            <View>Missed recents</View>
+        </SafeAreaView>
+    )
+}
+
+
+function Recents() {
+    return(
+        <Tab.Navigator>
+            <Tab.Screen name="All" component={AllRecents} />
+            <Tab.Screen name="Missed" component={MissedRecents} />
+        </Tab.Navigator>
     )
 }
 
