@@ -1,16 +1,30 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useRef, useState } from 'react';
-import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Dimensions, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
 
 let device_width = Dimensions.get("window").width;
 let device_height = Dimensions.get("window").height;
 
 function Favorites() {
     return (
-        <View>
+        <SafeAreaView>
             <StatusBar style="auto" />
-            <Text>hello</Text>
-        </View>
+            <View>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 10, paddingVertical: 10, width: device_width, marginBottom: 10 }}>
+                    <View style={{ alignSelf: 'center', flex: 1, alignItems: 'flex-start' }}>
+                        <Ionicons name="add" size="30" color="#3385ff" />
+                    </View>
+                    <View style={{ alignSelf: 'center', flex: 1 }}>
+                        <Text style={{ fontSize: 25, fontWeight: '500', alignSelf: 'center', flex: 1, textAlign: 'center' }}>Favorites</Text>
+                    </View>
+                    <Text style={{ fontSize: 20, alignSelf: 'flex-end', color: "#3385ff", textAlign: 'right', flex: 1 }}>Edit</Text>
+                </View>
+            </View>
+
+            
+
+        </SafeAreaView>
     )
 }
 
