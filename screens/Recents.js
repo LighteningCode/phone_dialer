@@ -1,8 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useRef, useState } from 'react';
 import { Dimensions, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, FlatList } from 'react-native';
-import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import SegmentedControl from '@react-native-segmented-control/segmented-control';
 
 let device_width = Dimensions.get("window").width;
 let device_height = Dimensions.get("window").height;
@@ -17,7 +18,7 @@ function RecentListItem({ item }) {
             <View style={{ flex: 1, justifyContent: 'center' }}>
                 <View style={{ alignSelf: 'center' }}>
                     {(item.called) ?
-                        <Ionicons name="call-sharp" size={15} />
+                        <MaterialIcons name="phone-callback" size={20} color="#949494" />
                         :
                         <View></View>
                     }
@@ -41,8 +42,52 @@ function RecentListItem({ item }) {
     )
 }
 
-function AllRecents() {
+
+function Recents() {
+
+    const [allCalls, setAllCalls] = useState({
+        data: [
+            { key: '055 756 4654', time: "12:59pm", called: false, missed: false },
+            { key: 'Dan', time: "12:59pm", called: true, missed: true },
+            { key: 'Dominic', time: "12:59pm", called: false, missed: false },
+            { key: 'Jackson', time: "12:59pm", called: true, missed: true },
+            { key: 'James', time: "12:59pm", called: false, missed: false },
+        ]
+    })
+
+    const [visibleCalls, setVisibleCalls] = useState({
+        data: []
+    })
+
+    const initialMount = useRef(true);
+
+    useEffect(() => {
+        if (initialMount.current) {
+            setVisibleCalls({data: allCalls.data})
+            initialMount.current = false
+            console.log(allCalls.data)
+        } else {
+            // handle refresh
+        }
+    }, [visibleCalls,initialMount])
+
+
+
+    const handleSegmentChange = (event) => {
+        // create copy of current all calls
+        const _allCalls = allCalls.data
+
+        // if segment is not the first one 
+        if (event.nativeEvent.selectedSegmentIndex !== 0) {
+            let newCalls = _allCalls.filter(x => x.missed !== false)
+            setVisibleCalls({data: newCalls})
+        }else{
+            setVisibleCalls({data: allCalls.data})
+        }
+    }
+
     return (
+
         <SafeAreaView style={{ ...styles.container }}>
             <StatusBar style="auto" />
             <View style={{ width: device_width }}>
@@ -51,46 +96,39 @@ function AllRecents() {
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 10, paddingVertical: 10, width: device_width, marginBottom: 10 }}>
                         <View style={{ alignSelf: 'center', flex: 1, alignItems: 'flex-end' }}>
                         </View>
-                        <View style={{ alignSelf: 'center', flex: 1 }}>
+                        <View style={{ alignSelf: 'center', flex: 2 }}>
+                            <SegmentedControl
+                                values={["All", "Missed"]}
+                                selectedIndex={0}
+                                onChange={handleSegmentChange}
 
+                            />
                         </View>
-                        <Text style={{ fontSize: 20, alignSelf: 'flex-end', color: "#3385ff", textAlign: 'right', flex: 1 }}>Edit</Text>
+                        <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'flex-end' }}>
+                            <Text style={{ fontSize: 20, alignSelf: 'center', color: "#3385ff" }}>Edit</Text>
+                        </View>
                     </View>
                 </View>
 
-                <View style={{ paddingLeft: 20, borderBottomWidth: 1, borderColor: "#d1d1d1" }}>
+                <View style={{ paddingLeft: 20, borderBottomWidth: 1, borderColor: "#d1d1d1",marginBottom: 15 }}>
                     <Text style={{ fontSize: 40, fontWeight: '700' }}>Recents</Text>
                 </View>
                 <FlatList
-                    data={[
-                        { key: 'Devin', time: "12:59pm", called: false, missed: false },
-                        { key: 'Dan', time: "12:59pm", called: true, missed: true },
-                        { key: 'Dominic', time: "12:59pm", called: false, missed: false },
-                        { key: 'Jackson', time: "12:59pm", called: true, missed: true },
-                        { key: 'James', time: "12:59pm", called: false, missed: false },
-                    ]}
+                    data={visibleCalls.data}
                     renderItem={({ item }) => <RecentListItem item={item} />}
                 />
 
             </View>
         </SafeAreaView>
-    )
-}
 
-
-
-function Recents() {
-    return (
-        <View style={{ ...styles.container, paddingTop: 50 }}>
-            <AllRecents />
-        </View>
     )
 }
 
 
 const styles = StyleSheet.create({
     container: {
-        height: device_height
+        height: device_height,
+        backgroundColor: "#ffffff"
     },
     button: {
         alignItems: 'center',
