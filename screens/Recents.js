@@ -12,9 +12,10 @@ const Tab = createMaterialTopTabNavigator()
 
 function RecentListItem({ item }) {
     return (
-        <View style={{flex: 1}}>
-            <View>
-                <View style={{ flex: 1, alignSelf: 'center' }}>
+        <View style={{ flexDirection: 'row' }}>
+
+            <View style={{ flex: 1, justifyContent: 'center' }}>
+                <View style={{ alignSelf: 'center' }}>
                     {(item.called) ?
                         <Ionicons name="call-sharp" size={15} />
                         :
@@ -24,7 +25,7 @@ function RecentListItem({ item }) {
             </View>
 
 
-            <View style={{ justifyContent: 'space-around', flexDirection: 'row', height: 50, paddingHorizontal: 20, borderBottomWidth: 1, borderColor: "#d1d1d1" }}>
+            <View style={{ flex: 10, justifyContent: 'space-between', flexDirection: 'row', height: 50, paddingHorizontal: 5, borderBottomWidth: 1, borderColor: "#d1d1d1" }}>
 
                 <View style={{ flex: 5, alignSelf: 'center', alignContent: 'flex-start' }}>
                     <Text style={{ alignSelf: 'start', fontSize: 18, fontWeight: '600', color: `${(item.missed) ? "#ff3d3d" : "black"}` }}>{item.key}</Text>
@@ -76,48 +77,12 @@ function AllRecents() {
     )
 }
 
-function MissedRecents() {
-    return (
-
-        <SafeAreaView style={{ ...styles.container }}>
-            <StatusBar style="auto" />
-            <View style={{ width: device_width }}>
-
-                <View>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 10, paddingVertical: 10, width: device_width, marginBottom: 10 }}>
-                        <View style={{ alignSelf: 'center', flex: 1, alignItems: 'flex-end' }}>
-                        </View>
-                        <View style={{ alignSelf: 'center', flex: 1 }}>
-
-                        </View>
-                        <Text style={{ fontSize: 20, alignSelf: 'flex-end', color: "#3385ff", textAlign: 'right', flex: 1 }}>Edit</Text>
-                    </View>
-                </View>
-
-                <View style={{ paddingLeft: 20, borderBottomWidth: 1, borderColor: "#d1d1d1" }}>
-                    <Text style={{ fontSize: 40, fontWeight: '700' }}>Recents</Text>
-                </View>
-                <FlatList
-                    data={[
-                        { key: 'Dan', time: "12:59pm", called: true, missed: true },
-                        { key: 'Jackson', time: "12:59pm", called: true, missed: true },
-                    ]}
-                    renderItem={({ item }) => <RecentListItem item={item} />}
-                />
-
-            </View>
-        </SafeAreaView>
-    )
-}
 
 
 function Recents() {
     return (
         <View style={{ ...styles.container, paddingTop: 50 }}>
-            <Tab.Navigator>
-                <Tab.Screen name="All" component={AllRecents} />
-                <Tab.Screen name="Missed" component={MissedRecents} />
-            </Tab.Navigator>
+            <AllRecents />
         </View>
     )
 }
