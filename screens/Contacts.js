@@ -3,9 +3,15 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Dimensions, SafeAreaView, SectionList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
 import { TextInput } from 'react-native-gesture-handler';
+import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
+
+const ContactStack = createStackNavigator();
 
 let device_width = Dimensions.get("window").width;
 let device_height = Dimensions.get("window").height;
+
+
 
 
 function SectionListItem({ item }) {
@@ -19,13 +25,21 @@ function SectionListItem({ item }) {
 function SectionHeader({ section }) {
     return (
         <View style={{ flexDirection: 'row', justifyContent: 'start', ...styles.sectionHeader }}>
-            <Text style={{ alignSelf: 'center',fontWeight: '800' }}>{section.title}</Text>
+            <Text style={{ alignSelf: 'center', fontWeight: '800' }}>{section.title}</Text>
         </View>
     )
 }
 
+function AddContacts() {
+    return (
+        <SafeAreaView>
+            <Text>Hello from add contact stack</Text>
+        </SafeAreaView>
+    )
+}
 
-function Contacts() {
+function ContactView(props) {
+
     return (
         <SafeAreaView style={{ ...styles.container, width: device_width, height: device_height, flexDirection: 'column' }}>
             <StatusBar style="auto" />
@@ -35,7 +49,11 @@ function Contacts() {
                     <Text style={{ fontSize: 20, alignSelf: 'center', color: "#3385ff", flex: 1 }}>Groups</Text>
                     <Text style={{ fontSize: 25, fontWeight: '500', alignSelf: 'center', flex: 1, textAlign: 'center' }}>Contacts</Text>
                     <View style={{ alignSelf: 'center', flex: 1, alignItems: 'flex-end' }}>
-                        <Ionicons name="add" size="30" color="#3385ff" />
+
+                        <TouchableOpacity onPress={() => props.navigation.navigate("Add")}>
+                            <Ionicons name="add" size="30" color="#3385ff" />
+                        </TouchableOpacity>
+
                     </View>
                 </View>
 
@@ -49,7 +67,6 @@ function Contacts() {
                 </View>
             </View>
 
-
             <SectionList
                 sections={[
                     { title: "B", data: ["Belvis", "Belinda", "Brenda"] },
@@ -62,6 +79,29 @@ function Contacts() {
             />
 
         </SafeAreaView>
+    )
+}
+
+
+function Contacts() {
+
+
+    return (
+
+        <ContactStack.Navigator
+            headerMode="none"
+            mode="modal"
+            screenOptions={{
+                gestureEnabled: true,
+                cardOverlayEnabled: true,
+                ...TransitionPresets.ModalSlideFromBottomIOS
+            }}
+            initialRouteName="Contacts"
+        >
+            <ContactStack.Screen name="Contacts" component={ContactView} />
+            <ContactStack.Screen name="Add" component={AddContacts} />
+        </ContactStack.Navigator>
+
     )
 }
 

@@ -29,8 +29,8 @@ function RecentListItem({ item }) {
             <View style={{ flex: 9, justifyContent: 'space-between', flexDirection: 'row', height: 50, paddingHorizontal: 5, borderBottomWidth: 0.75, borderColor: "#d1d1d1" }}>
 
                 <View style={{ flex: 5, alignSelf: 'center', alignContent: 'flex-start' }}>
-                    <Text style={{ alignSelf: 'start', fontSize: 18, fontWeight: '600', color: `${(item.missed) ? "#ff3d3d" : "black"}` }}>{item.key}</Text>
-                    <Text style={{ alignSelf: 'start', color: "#bfbfbf" }}>{item.area}</Text>
+                    <Text style={{ alignSelf: 'flex-start', fontSize: 18, fontWeight: '600', color: `${(item.missed) ? "#ff3d3d" : "black"}` }}>{item.key}</Text>
+                    <Text style={{ alignSelf: 'flex-start', color: "#bfbfbf" }}>{item.area}</Text>
                 </View>
                 <Text style={{ flex: 2, alignSelf: 'center', fontWeight: '400', textAlign: 'right', color:"#a3a3a3" }}>{item.time}</Text>
                 <View style={{ flex: 1, alignSelf: 'center' }}>
