@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useRef, useState } from 'react';
 import { Dimensions, SafeAreaView, ScrollView, SectionList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
+import { Ionicons, FontAwesome5, FontAwesome } from '@expo/vector-icons';
 import { TextInput } from 'react-native-gesture-handler';
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
@@ -33,18 +33,50 @@ function SectionHeader({ section }) {
 
 function AddContacts() {
 
+    const initialMount = useRef(true)
+    const [formData, setFormData] = useState({})
+    const [firstChar, setFirstChar] = useState(null)
+    const [lastChar, setLastChar] = useState(null)
+
+    const handleTextChange = (text, name) => {
+
+        // get the first character of the first name
+        if (name === 'firstname') {
+            const firstChar = text.substr(0, 1).trim()
+            setFirstChar(firstChar)
+        }
+
+        if (name === 'lastname') {
+            const lastChar = text.substr(0, 1).trim()
+            setLastChar(lastChar)
+        }
+
+        setFormData(prevState => ({ ...prevState, [name]: text }))
+    }
+
+    useEffect(() => {
+        if (initialMount.current) {
+            initialMount.current = false
+            console.log(firstChar)
+            console.log(lastChar)
+        } else {
+            // handle refreshes
+        }
+
+    }, [formData, initialMount,firstChar,lastChar])
+
     return (
         <SafeAreaView >
             <ScrollView>
                 <View style={{ backgroundColor: "#ededed" }}>
 
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 15, paddingVertical: 10, width: device_width, marginBottom: 10 }}>
-                        <TouchableOpacity style={{ fontSize: 20, alignSelf: 'center', flex: 1 }}>
-                            <Text style={{ fontSize: 21, fontWeight: "500", color: "#8E8E8F" }}>Cancel</Text>
+                        <TouchableOpacity onPress={} style={{ fontSize: 20, alignSelf: 'center', flex: 1 }}>
+                            <Text style={{ fontSize: 21, fontWeight: "500", color: "#007aff" }}>Cancel</Text>
                         </TouchableOpacity>
                         <Text style={{ fontSize: 22, fontWeight: '600', alignSelf: 'center', flex: 3, textAlign: 'center' }}>New Contact</Text>
                         <TouchableOpacity style={{ flex: 1, alignSelf: 'center' }}>
-                            <Text style={{ fontSize: 21, textAlign: 'right', fontWeight: "500", color: "#007aff" }}>Done</Text>
+                            <Text style={{ fontSize: 21, textAlign: 'right', fontWeight: "500", color: "#8E8E8F" }}>Done</Text>
                         </TouchableOpacity>
                     </View>
 
@@ -54,17 +86,22 @@ function AddContacts() {
                                 style={{ width: 170, height: 170, borderRadius: 82, justifyContent: 'center', flexDirection: 'row' }}
                                 colors={["#bfbfbf", "#a8a8a8"]}
                             >
-                                <Text style={{ alignSelf: 'center', fontSize: 50, fontWeight: 'bold', color: 'white' }}>EA</Text>
+                                {
+                                    ((firstChar !== '' || null) || (lastChar !== '' || null)) ?
+                                        <Text style={{ alignSelf: 'center', fontSize: 60, fontWeight: 'bold', color: 'white' }}>{firstChar + lastChar}</Text>
+                                        :
+                                        <FontAwesome style={{ alignSelf: 'center', fontSize: 100, fontWeight: 'bold', color: 'white' }} name="user" size={24} color="white" />
+                                }
                             </LinearGradient>
                         </View>
 
-                        <Button textContent="Add photo" style={{marginTop: 10}} />
+                        <Button textContent="Add photo" style={{ marginTop: 10 }} />
                     </View>
 
 
                     <View style={{ ...styles.inputGroup }}>
-                        <Input placeholder={"First name"} />
-                        <Input placeholder={"Last name"} />
+                        <Input onChange={(text) => handleTextChange(text, 'firstname')} placeholder={"First name"} />
+                        <Input onChange={(text) => handleTextChange(text, 'lastname')} placeholder={"Last name"} />
                         <Input placeholder={"Company"} />
                     </View>
 
@@ -110,17 +147,18 @@ function AddToInput({ placeholder }) {
     )
 }
 
-function Button({textContent,fontSize=16,style={},active=true}) {
+function Button({ textContent, fontSize = 16, style = {}, active = true }) {
     return (
-        <TouchableOpacity style={{...style, fontSize: 20, alignSelf: 'center', flex: 1 }}>
+        <TouchableOpacity style={{ ...style, fontSize: 20, alignSelf: 'center', flex: 1 }}>
             <Text style={{ fontSize: fontSize, fontWeight: "500", color: `${(!active) ? '#8E8E8F' : '#007aff'}` }}>{textContent}</Text>
         </TouchableOpacity>
     )
 }
 
-function Input({ placeholder }) {
+function Input({ placeholder, name = "input", onChange = () => { console.log("Input changed") } }) {
+    const [_name, setName] = useState('input')
     return (
-        <TextInput placeholderTextColor="#a6a6a6" placeholder={placeholder} style={styles.inputBox} />
+        <TextInput placeholderTextColor="#a6a6a6" onChangeText={onChange} placeholder={placeholder} style={styles.inputBox} />
     )
 }
 
