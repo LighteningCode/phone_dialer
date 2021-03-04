@@ -9,17 +9,19 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 const ContactStack = createStackNavigator();
 
+const UserStack = createStackNavigator();
+
 let device_width = Dimensions.get("window").width;
 let device_height = Dimensions.get("window").height;
 
 
 
 
-function SectionListItem({ item }) {
+function SectionListItem({ item, _onPress = () => { } }) {
     return (
-        <View style={{ ...styles.item, flexDirection: 'row', justifyContent: 'start' }}>
+        <TouchableOpacity onPress={_onPress} style={{ ...styles.item, flexDirection: 'row', justifyContent: 'start' }}>
             <Text style={{ alignSelf: 'center' }}>{item}</Text>
-        </View>
+        </TouchableOpacity>
     )
 }
 
@@ -63,7 +65,7 @@ function AddContacts(props) {
             console.log(Object.entries({}).length)
         } else {
             // handle refreshes
-            
+
         }
 
     }, [formData, initialMount, firstChar, lastChar])
@@ -172,16 +174,11 @@ function Input({ placeholder, name = "input", onChange = () => { console.log("In
     )
 }
 
-function ContactView(props) {
+function ContactList({ navigation }) {
 
-    const { navigation } = props
-
-    useEffect(() => {
-        const subscribe = navigation.addListener('focus', () => {
-            StatusBar.setBarStyle("dark-content")
-        });
-        return subscribe;
-    }, [navigation])
+    const OpenUserView = (userData) => {
+        navigation.navigate('User', userData)
+    }
 
     return (
         <SafeAreaView style={{ ...styles.container, width: device_width, height: device_height, flexDirection: 'column' }}>
@@ -217,11 +214,44 @@ function ContactView(props) {
                     { title: "D", data: ["Delvis", "Declan", "Dennis"] },
                     { title: "J", data: ["Jermiah", "Jerry", "Jennifer"] },
                 ]}
-                renderItem={({ item }) => <SectionListItem key={`item${item}`} item={item} />}
+                renderItem={({ item }) => <SectionListItem _onPress={() => OpenUserView(item)} key={`item${item}`} item={item} />}
                 renderSectionHeader={({ section }) => <SectionHeader key={`section${section}`} section={section} />}
+                keyExtractor={(item, index) => index.toString()}
             />
 
         </SafeAreaView>
+    )
+}
+
+function UserView({route}) {
+
+    console.log(route.params)
+
+    return (
+        <SafeAreaView>
+            <Text>Hello {route.params}, from user view</Text>
+        </SafeAreaView>
+    )
+}
+
+
+function ContactView(props) {
+
+    const { navigation } = props
+
+    useEffect(() => {
+        const subscribe = navigation.addListener('focus', () => {
+            StatusBar.setBarStyle("dark-content")
+        });
+        return subscribe;
+    }, [navigation])
+
+    return (
+        <UserStack.Navigator headerMode='none' initialRouteName="List">
+            <UserStack.Screen component={ContactList} name="List" />
+            <UserStack.Screen component={UserView} name="User" />
+        </UserStack.Navigator>
+
     )
 }
 
@@ -299,7 +329,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         marginHorizontal: 10,
         borderColor: "#e3e3e3",
-        borderBottomWidth: 1.5
+        borderBottomWidth: 0.5
     },
 });
 
