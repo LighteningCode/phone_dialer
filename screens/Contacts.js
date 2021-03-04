@@ -31,7 +31,7 @@ function SectionHeader({ section }) {
     )
 }
 
-function AddContacts() {
+function AddContacts(props) {
 
     const initialMount = useRef(true)
     const [formData, setFormData] = useState({})
@@ -63,7 +63,7 @@ function AddContacts() {
             // handle refreshes
         }
 
-    }, [formData, initialMount,firstChar,lastChar])
+    }, [formData, initialMount, firstChar, lastChar])
 
     return (
         <SafeAreaView >
@@ -71,7 +71,7 @@ function AddContacts() {
                 <View style={{ backgroundColor: "#ededed" }}>
 
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 15, paddingVertical: 10, width: device_width, marginBottom: 10 }}>
-                        <TouchableOpacity onPress={} style={{ fontSize: 20, alignSelf: 'center', flex: 1 }}>
+                        <TouchableOpacity onPress={() => props.navigation.goBack()} style={{ fontSize: 20, alignSelf: 'center', flex: 1 }}>
                             <Text style={{ fontSize: 21, fontWeight: "500", color: "#007aff" }}>Cancel</Text>
                         </TouchableOpacity>
                         <Text style={{ fontSize: 22, fontWeight: '600', alignSelf: 'center', flex: 3, textAlign: 'center' }}>New Contact</Text>
