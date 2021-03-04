@@ -1,10 +1,11 @@
-import { StatusBar } from 'expo-status-bar';
+// import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useRef, useState } from 'react';
-import { Dimensions, SafeAreaView, ScrollView, SectionList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Dimensions, SafeAreaView, ScrollView, SectionList, StyleSheet, Text, TouchableOpacity, View, StatusBar } from 'react-native';
 import { Ionicons, FontAwesome5, FontAwesome } from '@expo/vector-icons';
 import { TextInput } from 'react-native-gesture-handler';
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import { LinearGradient } from 'expo-linear-gradient';
+
 
 const ContactStack = createStackNavigator();
 
@@ -37,6 +38,9 @@ function AddContacts(props) {
     const [firstChar, setFirstChar] = useState(null)
     const [lastChar, setLastChar] = useState(null)
 
+    const { navigation } = props
+
+
     const handleTextChange = (text, name) => {
 
         // get the first character of the first name
@@ -59,34 +63,42 @@ function AddContacts(props) {
             console.log(Object.entries({}).length)
         } else {
             // handle refreshes
+            
         }
 
     }, [formData, initialMount, firstChar, lastChar])
 
+    useEffect(() => {
+        const subscribe = navigation.addListener('focus', () => {
+            StatusBar.setBarStyle("light-content")
+        });
+        return subscribe;
+    }, [navigation])
+
     return (
         <SafeAreaView>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 15, paddingVertical: 10, width: device_width, marginBottom: 10 }}>
-                        <TouchableOpacity onPress={() => props.navigation.goBack()} style={{ fontSize: 20, alignSelf: 'center', flex: 1 }}>
-                            <Text style={{ fontSize: 21, fontWeight: "500", color: "#007aff" }}>Cancel</Text>
-                        </TouchableOpacity>
-                        <Text style={{ fontSize: 22, fontWeight: '600', alignSelf: 'center', flex: 3, textAlign: 'center' }}>New Contact</Text>
-                        <TouchableOpacity style={{ flex: 1, alignSelf: 'center' }}>
-                            <Text style={{ fontSize: 21, textAlign: 'right', fontWeight: "500", color: `${(Object.entries({}).length > 0) ? '#8E8E8F' : '#007aff'}` }}>Done</Text>
-                        </TouchableOpacity>
-                    </View>
+                <TouchableOpacity onPress={() => props.navigation.goBack()} style={{ fontSize: 20, alignSelf: 'center', flex: 1 }}>
+                    <Text style={{ fontSize: 21, fontWeight: "500", color: "#007aff" }}>Cancel</Text>
+                </TouchableOpacity>
+                <Text style={{ fontSize: 22, fontWeight: '600', alignSelf: 'center', flex: 3, textAlign: 'center' }}>New Contact</Text>
+                <TouchableOpacity style={{ flex: 1, alignSelf: 'center' }}>
+                    <Text style={{ fontSize: 21, textAlign: 'right', fontWeight: "500", color: `${(Object.entries({}).length > 0) ? '#8E8E8F' : '#007aff'}` }}>Done</Text>
+                </TouchableOpacity>
+            </View>
             <ScrollView>
-                
+
                 <View style={{ backgroundColor: "#ededed" }}>
 
                     <View style={{ justifyContent: 'center', marginVertical: 50 }}>
                         <View style={{ alignSelf: 'center' }}>
                             <LinearGradient
                                 style={{ width: 170, height: 170, borderRadius: 82, justifyContent: 'center', flexDirection: 'row' }}
-                                colors={["#bdbdbd","#9c9c9c", "#9c9c9c"]}
+                                colors={["#bdbdbd", "#9c9c9c", "#9c9c9c"]}
                             >
                                 {
                                     (firstChar || lastChar) ?
-                                        <Text style={{ alignSelf: 'center', fontSize: 60, fontWeight: 'bold', color: 'white' }}>{ ((firstChar) ? firstChar.toUpperCase() : '' ) + ((lastChar) ? lastChar.toUpperCase() : '')}</Text>
+                                        <Text style={{ alignSelf: 'center', fontSize: 60, fontWeight: 'bold', color: 'white' }}>{((firstChar) ? firstChar.toUpperCase() : '') + ((lastChar) ? lastChar.toUpperCase() : '')}</Text>
                                         :
                                         <FontAwesome style={{ alignSelf: 'center', fontSize: 100, fontWeight: 'bold', color: 'white' }} name="user" size={24} color="white" />
                                 }
@@ -162,6 +174,15 @@ function Input({ placeholder, name = "input", onChange = () => { console.log("In
 
 function ContactView(props) {
 
+    const { navigation } = props
+
+    useEffect(() => {
+        const subscribe = navigation.addListener('focus', () => {
+            StatusBar.setBarStyle("dark-content")
+        });
+        return subscribe;
+    }, [navigation])
+
     return (
         <SafeAreaView style={{ ...styles.container, width: device_width, height: device_height, flexDirection: 'column' }}>
             <StatusBar style="auto" />
@@ -216,7 +237,7 @@ function Contacts() {
             screenOptions={{
                 gestureEnabled: true,
                 cardOverlayEnabled: true,
-                ...TransitionPresets.ModalSlideFromBottomIOS
+                ...TransitionPresets.ModalPresentationIOS
             }}
             initialRouteName="Contacts"
         >
