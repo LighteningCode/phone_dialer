@@ -196,8 +196,8 @@ function KeyPad() {
                     <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
                         <CustomPhoneButton custom_style={{ backgroundColor: 'rgba(52, 52, 52, 0.0)' }} />
 
-                        <CustomPhoneButton custom_style={{ backgroundColor: '#00e600' }}>
-                            <FontAwesome5 name={"phone-alt"} color="white" size={30} />
+                        <CustomPhoneButton custom_style={{ backgroundColor: '#02c902' }}>
+                            <Ionicons name={"md-call"} color="white" size={35} />
                         </CustomPhoneButton>
 
 
