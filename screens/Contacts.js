@@ -5,6 +5,7 @@ import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
 import { TextInput } from 'react-native-gesture-handler';
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const ContactStack = createStackNavigator();
 
@@ -31,6 +32,7 @@ function SectionHeader({ section }) {
 }
 
 function AddContacts() {
+
     return (
         <SafeAreaView >
             <ScrollView>
@@ -38,12 +40,25 @@ function AddContacts() {
 
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 15, paddingVertical: 10, width: device_width, marginBottom: 10 }}>
                         <TouchableOpacity style={{ fontSize: 20, alignSelf: 'center', flex: 1 }}>
-                            <Text style={{ fontSize: 21, fontWeight: "500", color: "#" }}>Cancel</Text>
+                            <Text style={{ fontSize: 21, fontWeight: "500", color: "#8E8E8F" }}>Cancel</Text>
                         </TouchableOpacity>
-                        <Text style={{ fontSize: 25, fontWeight: '700', alignSelf: 'center', flex: 3, textAlign: 'center' }}>New Contact</Text>
+                        <Text style={{ fontSize: 22, fontWeight: '600', alignSelf: 'center', flex: 3, textAlign: 'center' }}>New Contact</Text>
                         <TouchableOpacity style={{ flex: 1, alignSelf: 'center' }}>
                             <Text style={{ fontSize: 21, textAlign: 'right', fontWeight: "500", color: "#007aff" }}>Done</Text>
                         </TouchableOpacity>
+                    </View>
+
+                    <View style={{ justifyContent: 'center', marginVertical: 50 }}>
+                        <View style={{ alignSelf: 'center' }}>
+                            <LinearGradient
+                                style={{ width: 170, height: 170, borderRadius: 82, justifyContent: 'center', flexDirection: 'row' }}
+                                colors={["#bfbfbf", "#a8a8a8"]}
+                            >
+                                <Text style={{ alignSelf: 'center', fontSize: 50, fontWeight: 'bold', color: 'white' }}>EA</Text>
+                            </LinearGradient>
+                        </View>
+
+                        <Button textContent="Add photo" style={{marginTop: 10}} />
                     </View>
 
 
@@ -92,6 +107,14 @@ function AddToInput({ placeholder }) {
             </TouchableOpacity>
             <TextInput placeholderTextColor="#a6a6a6" placeholder={placeholder} style={styles.inputBox} />
         </View>
+    )
+}
+
+function Button({textContent,fontSize=16,style={},active=true}) {
+    return (
+        <TouchableOpacity style={{...style, fontSize: 20, alignSelf: 'center', flex: 1 }}>
+            <Text style={{ fontSize: fontSize, fontWeight: "500", color: `${(!active) ? '#8E8E8F' : '#007aff'}` }}>{textContent}</Text>
+        </TouchableOpacity>
     )
 }
 
