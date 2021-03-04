@@ -80,9 +80,6 @@ function Favorites() {
                     />
                 </ScrollView>
             </View>
-
-
-
         </SafeAreaView>
     )
 }
