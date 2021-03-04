@@ -87,8 +87,8 @@ function AddContacts(props) {
                                 colors={["#bfbfbf", "#a8a8a8"]}
                             >
                                 {
-                                    ((firstChar !== '' || null) || (lastChar !== '' || null)) ?
-                                        <Text style={{ alignSelf: 'center', fontSize: 60, fontWeight: 'bold', color: 'white' }}>{firstChar + lastChar}</Text>
+                                    (firstChar || lastChar) ?
+                                        <Text style={{ alignSelf: 'center', fontSize: 60, fontWeight: 'bold', color: 'white' }}>{ ((firstChar) ? firstChar.toUpperCase() : '' ) + ((lastChar) ? lastChar.toUpperCase() : '')}</Text>
                                         :
                                         <FontAwesome style={{ alignSelf: 'center', fontSize: 100, fontWeight: 'bold', color: 'white' }} name="user" size={24} color="white" />
                                 }
