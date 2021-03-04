@@ -16,4 +16,4 @@ Goals
 7. Detect scroll position on the scroll list
 8. Make some searching work somewhere
 9. Create a component and dynamically load data when a clicked.
-10. Play sound from the app.
+10. Play sound from the app and enable haptics

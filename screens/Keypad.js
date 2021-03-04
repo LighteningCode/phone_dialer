@@ -4,9 +4,7 @@ import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-nati
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
-
-
-
+import { Audio } from "expo-av";
 
 let device_width = Dimensions.get("window").width;
 let device_height = Dimensions.get("window").height;
@@ -29,7 +27,7 @@ function PhoneButton({ input, _onPress, number, subtext }) {
 }
 
 
-function CustomPhoneButton({ children, input, _onPress, _longPress,_onPressOut, custom_style = {} }) {
+function CustomPhoneButton({ children, input, _onPress, _longPress, _onPressOut, custom_style = {} }) {
 
     const initialMount = useRef(true)
 
@@ -39,7 +37,7 @@ function CustomPhoneButton({ children, input, _onPress, _longPress,_onPressOut, 
         } else {
             // handle refreshes here
         }
-    }, [initialMount,input])
+    }, [initialMount, input])
 
 
 
@@ -57,9 +55,10 @@ function CustomPhoneButton({ children, input, _onPress, _longPress,_onPressOut, 
 
 
 function KeyPad() {
-    const [dial, setDial] = useState({number:''})
+    const [dial, setDial] = useState({ number: '' })
     const initailMount = useRef(true)
     const deleteTimer = useRef(null)
+    const [sound, setSound] = useState()
 
     useEffect(() => {
         if (initailMount.current) {
@@ -69,15 +68,46 @@ function KeyPad() {
             // refresh
         }
 
-    }, [dial,deleteTimer])
+    }, [dial, deleteTimer])
+
+    async function playSound() {
+        const { sound } = await Audio.Sound.createAsync(
+            require('../assets/phone_beep.mp3')
+        )
+        sound.setVolumeAsync(0.05).then(res => {
+            console.log(res)
+        }).catch(e => {
+            console.log(e)
+            console.log("something went wrong")
+        })
+        setSound(sound)
+
+        console.log("Play beep");
+        await sound.playAsync();
+    }
+
+    useEffect(() => {
+        return sound
+            ? () => {
+                console.log("unloading sound from mem")
+                sound.unloadAsync
+            }
+            : undefined
+    }, [sound])
 
     const handlePress = (input) => {
         const newDial = dial.number + input
-        setDial({number: newDial})
+        setDial({ number: newDial })
+        playSound()
+            .then()
+            .catch(e => {
+                console.log(e)
+                console.log("Something went wrong")
+            })
     }
 
     const handleDelete = () => {
-        setDial(prevDial => ({number: prevDial.number.substr(0, prevDial.number.length - 1)}))
+        setDial(prevDial => ({ number: prevDial.number.substr(0, prevDial.number.length - 1) }))
         console.log("wipe wipe")
     }
 
