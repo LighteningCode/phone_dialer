@@ -4,7 +4,6 @@ import { Dimensions, SafeAreaView, ScrollView, SectionList, StyleSheet, Text, To
 import { Ionicons, FontAwesome5, FontAwesome } from '@expo/vector-icons';
 import { TextInput } from 'react-native-gesture-handler';
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
-import { NavigationContainer } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 const ContactStack = createStackNavigator();
@@ -83,7 +82,7 @@ function AddContacts(props) {
                         <View style={{ alignSelf: 'center' }}>
                             <LinearGradient
                                 style={{ width: 170, height: 170, borderRadius: 82, justifyContent: 'center', flexDirection: 'row' }}
-                                colors={["#bfbfbf", "#a8a8a8"]}
+                                colors={["#bdbdbd","#9c9c9c", "#9c9c9c"]}
                             >
                                 {
                                     (firstChar || lastChar) ?
