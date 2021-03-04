@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useRef, useState } from 'react';
-import { Dimensions, SafeAreaView, SectionList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Dimensions, SafeAreaView, ScrollView, SectionList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
 import { TextInput } from 'react-native-gesture-handler';
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
@@ -32,9 +32,72 @@ function SectionHeader({ section }) {
 
 function AddContacts() {
     return (
-        <SafeAreaView>
-            <Text>Hello from add contact stack</Text>
+        <SafeAreaView >
+            <ScrollView>
+                <View style={{ backgroundColor: "#ededed" }}>
+
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 15, paddingVertical: 10, width: device_width, marginBottom: 10 }}>
+                        <TouchableOpacity style={{ fontSize: 20, alignSelf: 'center', flex: 1 }}>
+                            <Text style={{ fontSize: 21, fontWeight: "500", color: "#" }}>Cancel</Text>
+                        </TouchableOpacity>
+                        <Text style={{ fontSize: 25, fontWeight: '700', alignSelf: 'center', flex: 3, textAlign: 'center' }}>New Contact</Text>
+                        <TouchableOpacity style={{ flex: 1, alignSelf: 'center' }}>
+                            <Text style={{ fontSize: 21, textAlign: 'right', fontWeight: "500", color: "#007aff" }}>Done</Text>
+                        </TouchableOpacity>
+                    </View>
+
+
+                    <View style={{ ...styles.inputGroup }}>
+                        <Input placeholder={"First name"} />
+                        <Input placeholder={"Last name"} />
+                        <Input placeholder={"Company"} />
+                    </View>
+
+                    <View style={{ ...styles.inputGroup }}>
+                        <AddToInput placeholder={"add phone"} />
+                    </View>
+
+                    <View style={{ ...styles.inputGroup }}>
+                        <AddToInput placeholder={"add email"} />
+                    </View>
+
+                    <View style={{ ...styles.inputGroup }}>
+                        <AddToInput placeholder={"add website"} />
+                    </View>
+
+                    <View style={{ ...styles.inputGroup }}>
+                        <AddToInput placeholder={"add address"} />
+                    </View>
+
+                    <View style={{ ...styles.inputGroup }}>
+                        <AddToInput placeholder={"add birthday"} />
+                    </View>
+
+                    <View style={{ ...styles.inputGroup }}>
+                        <AddToInput placeholder={"add social profile"} />
+                    </View>
+
+                </View>
+
+            </ScrollView>
         </SafeAreaView>
+    )
+}
+
+function AddToInput({ placeholder }) {
+    return (
+        <View style={{ flexDirection: 'row' }}>
+            <TouchableOpacity style={{ alignSelf: 'center' }}>
+                <Ionicons name="ios-add-circle-sharp" size={24} color="#0bd92e" />
+            </TouchableOpacity>
+            <TextInput placeholderTextColor="#a6a6a6" placeholder={placeholder} style={styles.inputBox} />
+        </View>
+    )
+}
+
+function Input({ placeholder }) {
+    return (
+        <TextInput placeholderTextColor="#a6a6a6" placeholder={placeholder} style={styles.inputBox} />
     )
 }
 
@@ -105,6 +168,9 @@ function Contacts() {
     )
 }
 
+// this is a disabled color #8E8E8F
+// this is a active color #007aff
+
 
 const styles = StyleSheet.create({
     container: {
@@ -121,6 +187,19 @@ const styles = StyleSheet.create({
         width: 75,
         height: 75,
         borderRadius: 1200,
+    },
+    inputBox: {
+        backgroundColor: "#ffffff",
+        paddingHorizontal: 10,
+        paddingVertical: 15,
+        fontSize: 16,
+        borderBottomWidth: 0.75,
+        borderBottomColor: "#e0e0e0",
+    },
+    inputGroup: {
+        backgroundColor: "#ffffff",
+        paddingLeft: 15,
+        marginBottom: 40,
     },
     sectionHeader: {
         paddingTop: 2,
