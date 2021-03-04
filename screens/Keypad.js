@@ -5,6 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
 import { Audio } from "expo-av";
+import * as Haptics from 'expo-haptics';
 
 let device_width = Dimensions.get("window").width;
 let device_height = Dimensions.get("window").height;
@@ -75,7 +76,7 @@ function KeyPad() {
             require('../assets/phone_beep.mp3')
         )
         sound.setVolumeAsync(0.05).then(res => {
-            console.log(res)
+            res ? console.log("sound played") : null
         }).catch(e => {
             console.log(e)
             console.log("something went wrong")
@@ -84,6 +85,13 @@ function KeyPad() {
 
         console.log("Play beep");
         await sound.playAsync();
+
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium).then(res => {
+            console.log("Vibration made in keypad")
+        }).catch(e => {
+            console.log("An error occured")
+        })
+        
     }
 
     useEffect(() => {
