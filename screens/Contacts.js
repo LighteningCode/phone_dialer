@@ -20,7 +20,7 @@ let device_height = Dimensions.get("window").height;
 function SectionListItem({ item, _onPress = () => { } }) {
     return (
         <TouchableOpacity onPress={_onPress} style={{ ...styles.item, flexDirection: 'row', justifyContent: 'start' }}>
-            <Text style={{ alignSelf: 'center' }}>{item}</Text>
+            <Text style={{ alignSelf: 'center' }}>{item.name}</Text>
         </TouchableOpacity>
     )
 }
@@ -209,10 +209,36 @@ function ContactList({ navigation }) {
 
             <SectionList
                 sections={[
-                    { title: "B", data: ["Belvis", "Belinda", "Brenda"] },
-                    { title: "C", data: ["Calvin", "Cerry", "Cindy"] },
-                    { title: "D", data: ["Delvis", "Declan", "Dennis"] },
-                    { title: "J", data: ["Jermiah", "Jerry", "Jennifer"] },
+                    {
+                        title: "B", data: [
+                            { name: "Belvis Acheampong", area: "mobile", },
+                            { name: "Belinda Kumaesi", area: "mobile" },
+                            { name: "Brenda Abu", area: "mobile" },
+                        ]
+                    },
+                    {
+                        title: "C",
+                        data: [
+                            { name: "Calvin Asantey", area: "mobile" },
+                            { name: "Cerry Assumani", area: "mobile" },
+                            { name: "Cindy Armah", area: "mobile" },
+                        ]
+                    },
+                    {
+                        title: "D",
+                        data: [
+                            { name: "Delvis Agbe", area: "mobile" },
+                            { name: "Declan Nyankah", area: "mobile" },
+                            { name: "Dennis Brown", area: "mobile" },
+                        ]
+                    },
+                    {
+                        title: "E", data: [
+                            { name: "Elvis Agbesi", area: "mobile" },
+                            { name: "Ezra Kusi", area: "mobile" },
+                            { name: "Elias Famiche", area: "mobile" },
+                        ]
+                    },
                 ]}
                 renderItem={({ item }) => <SectionListItem _onPress={() => OpenUserView(item)} key={`item${item}`} item={item} />}
                 renderSectionHeader={({ section }) => <SectionHeader key={`section${section}`} section={section} />}
@@ -223,13 +249,28 @@ function ContactList({ navigation }) {
     )
 }
 
-function UserView({route}) {
+function UserView({ route }) {
 
-    console.log(route.params)
+    console.log(route.params.name)
 
     return (
         <SafeAreaView>
-            <Text>Hello {route.params}, from user view</Text>
+            <Text>Hello {route.params.name}, from user view</Text>
+
+            {/* <View style={{ alignSelf: 'center' }}>
+                <LinearGradient
+                    style={{ width: 170, height: 170, borderRadius: 82, justifyContent: 'center', flexDirection: 'row' }}
+                    colors={["#bdbdbd", "#9c9c9c", "#9c9c9c"]}
+                >
+                    {
+                        (firstChar || lastChar) ?
+                            <Text style={{ alignSelf: 'center', fontSize: 60, fontWeight: 'bold', color: 'white' }}>{((firstChar) ? firstChar.toUpperCase() : '') + ((lastChar) ? lastChar.toUpperCase() : '')}</Text>
+                            :
+                            <FontAwesome style={{ alignSelf: 'center', fontSize: 100, fontWeight: 'bold', color: 'white' }} name="user" size={24} color="white" />
+                    }
+                </LinearGradient>
+            </View> */}
+
         </SafeAreaView>
     )
 }
@@ -247,9 +288,18 @@ function ContactView(props) {
     }, [navigation])
 
     return (
-        <UserStack.Navigator headerMode='none' initialRouteName="List">
-            <UserStack.Screen component={ContactList} name="List" />
-            <UserStack.Screen component={UserView} name="User" />
+        <UserStack.Navigator initialRouteName="List">
+            <UserStack.Screen options={{ headerShown: false }} component={ContactList} name="List" />
+            <UserStack.Screen
+                options={{
+                    headerTitle: null,
+                    headerRight: () =>
+                        <TouchableOpacity style={styles.normal_btn}>
+                            <Text style={{ color: '#007aff', fontWeight: 'normal', fontSize: 20 }}>Edit</Text>
+                        </TouchableOpacity>
+                }}
+                component={UserView}
+                name="User" />
         </UserStack.Navigator>
 
     )
@@ -286,6 +336,10 @@ const styles = StyleSheet.create({
     container: {
         height: device_height,
         paddingTop: 60,
+    },
+    normal_btn: {
+        color: "#007aff",
+        padding: 10,
     },
     button: {
         alignItems: 'center',
