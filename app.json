@@ -3,6 +3,7 @@
     "name": "phone_dialer",
     "slug": "phone_dialer",
     "version": "1.0.0",
+    "privacy": "public",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
