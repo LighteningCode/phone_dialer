@@ -57,8 +57,7 @@ function AddContacts(props) {
     useEffect(() => {
         if (initialMount.current) {
             initialMount.current = false
-            console.log(firstChar)
-            console.log(lastChar)
+            console.log(Object.entries({}).length)
         } else {
             // handle refreshes
         }
@@ -66,19 +65,19 @@ function AddContacts(props) {
     }, [formData, initialMount, firstChar, lastChar])
 
     return (
-        <SafeAreaView >
-            <ScrollView>
-                <View style={{ backgroundColor: "#ededed" }}>
-
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 15, paddingVertical: 10, width: device_width, marginBottom: 10 }}>
+        <SafeAreaView>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 15, paddingVertical: 10, width: device_width, marginBottom: 10 }}>
                         <TouchableOpacity onPress={() => props.navigation.goBack()} style={{ fontSize: 20, alignSelf: 'center', flex: 1 }}>
                             <Text style={{ fontSize: 21, fontWeight: "500", color: "#007aff" }}>Cancel</Text>
                         </TouchableOpacity>
                         <Text style={{ fontSize: 22, fontWeight: '600', alignSelf: 'center', flex: 3, textAlign: 'center' }}>New Contact</Text>
                         <TouchableOpacity style={{ flex: 1, alignSelf: 'center' }}>
-                            <Text style={{ fontSize: 21, textAlign: 'right', fontWeight: "500", color: "#8E8E8F" }}>Done</Text>
+                            <Text style={{ fontSize: 21, textAlign: 'right', fontWeight: "500", color: `${(Object.entries({}).length > 0) ? '#8E8E8F' : '#007aff'}` }}>Done</Text>
                         </TouchableOpacity>
                     </View>
+            <ScrollView>
+                
+                <View style={{ backgroundColor: "#ededed" }}>
 
                     <View style={{ justifyContent: 'center', marginVertical: 50 }}>
                         <View style={{ alignSelf: 'center' }}>
@@ -102,7 +101,7 @@ function AddContacts(props) {
                     <View style={{ ...styles.inputGroup }}>
                         <Input onChange={(text) => handleTextChange(text, 'firstname')} placeholder={"First name"} />
                         <Input onChange={(text) => handleTextChange(text, 'lastname')} placeholder={"Last name"} />
-                        <Input placeholder={"Company"} />
+                        <Input onChange={(text) => handleTextChange(text, 'company')} placeholder={"Company"} />
                     </View>
 
                     <View style={{ ...styles.inputGroup }}>
