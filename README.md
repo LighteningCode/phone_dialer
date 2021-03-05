@@ -15,5 +15,5 @@ Goals
 6. Use an animation library to make some animations work (normal fades and some movements)
 7. Detect scroll position on the scroll list
 8. Make some searching work somewhere
-9. Create a component and dynamically load data when a clicked.
+9. Create a component and dynamically load data when a clicked. (completed)
 10. Play sound from the app and enable haptics (completed)
