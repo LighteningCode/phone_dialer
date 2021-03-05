@@ -40,16 +40,16 @@ function SectionHeader({ section }) {
     )
 }
 
-function Checkbox({ checked, onChange }) {
+function Checkbox({ checked, onChange, backgroundColor = 'white', size = 20 }) {
 
     return (
-        <TouchableOpacity onPress={onChange} style={{ flexDirection: 'row' }}>
+        <TouchableOpacity activeOpacity={1} onPress={onChange} style={{ flexDirection: 'row', padding: 10, backgroundColor: backgroundColor,borderRadius: 10 }}>
             <View style={{
-                width: 25,
-                height: 25,
+                width: size,
+                height: size,
                 backgroundColor: `${(checked) ? ACTIVE_COLOR : 'white'}`,
                 borderColor: `${(!checked) ? DISABLED_COLOR : 'transparent'}`,
-                borderRadius: 50,
+                borderRadius: size * 2,
                 borderWidth: 0.75,
                 justifyContent: 'center',
             }}>
@@ -73,7 +73,7 @@ function GroupContacts(props) {
 
     const initialMount = useRef(true)
     const [iCloudCheckbox, setICloudCheckbox] = useState(false)
-    
+
 
     useEffect(() => {
         const subscribe = navigation.addListener('focus', () => {
@@ -85,12 +85,12 @@ function GroupContacts(props) {
     useEffect(() => {
         if (initialMount.current) {
             initialMount.current = false
-        }else{
+        } else {
             // handle refreshes here
         }
     }, [iCloudCheckbox])
 
- 
+
     const handleChecked = () => {
         let checked = iCloudCheckbox
         setICloudCheckbox(!checked)
@@ -116,10 +116,13 @@ function GroupContacts(props) {
                 <View>
                     <Text>ICLOUD</Text>
 
+
                     <Checkbox
                         checked={iCloudCheckbox}
                         onChange={handleChecked}
                     />
+
+
 
                 </View>
             </View>
