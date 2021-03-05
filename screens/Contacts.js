@@ -192,7 +192,7 @@ function AddContacts(props) {
 
     return (
         <SafeAreaView>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 15, paddingVertical: 10, width: device_width, marginBottom: 10 }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 15, paddingVertical: 15, width: device_width, marginBottom: 10 }}>
                 <TouchableOpacity onPress={() => props.navigation.goBack()} style={{ fontSize: 20, alignSelf: 'center', flex: 1 }}>
                     <Text style={{ fontSize: 21, fontWeight: "500", color: "#007aff" }}>Cancel</Text>
                 </TouchableOpacity>
@@ -203,7 +203,7 @@ function AddContacts(props) {
             </View>
             <ScrollView>
 
-                <View style={{ backgroundColor: "#ededed" }}>
+                <View>
 
                     <View style={{ justifyContent: 'center', marginVertical: 50 }}>
                         <View style={{ alignSelf: 'center' }}>

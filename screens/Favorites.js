@@ -8,10 +8,28 @@ import { FlatList } from 'react-native-gesture-handler';
 let device_width = Dimensions.get("window").width;
 let device_height = Dimensions.get("window").height;
 
+const ACTIVE_COLOR = "#007aff"
+const DISABLED_COLOR = "#8E8E8F"
 
-function FavoriteListItem({ item }) {
+
+function FavoriteListItem({ item, editMode }) {
     return (
         <View style={{ flexDirection: 'row' }}>
+
+
+            {
+                (editMode)
+                    ?
+                    <View style={{ flex: 1, justifyContent: 'center', paddingLeft: 10 }}>
+                        <TouchableOpacity style={{ alignSelf: 'center' }} >
+                            <FontAwesome5 name="minus-circle" size={18} color="#ff2424" />
+                        </TouchableOpacity>
+                    </View>
+                    :
+                    null
+            }
+
+
 
             <View style={{ flex: 1, justifyContent: 'center', marginRight: 20, marginLeft: 20 }}>
                 <View style={{ alignSelf: 'center' }}>
@@ -36,7 +54,13 @@ function FavoriteListItem({ item }) {
                 </View>
 
                 <View style={{ flex: 1, alignSelf: 'center' }}>
-                    <Ionicons style={{ alignSelf: 'flex-end', marginRight: 5 }} color="#0084ff" name="information-circle-outline" size={22} />
+                    {
+                        (editMode)
+                            ?
+                            <FontAwesome5 style={{ alignSelf: 'flex-end', marginRight: 5 }} name="grip-lines" size={18} color={DISABLED_COLOR} />
+                            :
+                            <Ionicons style={{ alignSelf: 'flex-end', marginRight: 5 }} color="#0084ff" name="information-circle-outline" size={22} />
+                    }
                 </View>
 
             </View>
@@ -57,6 +81,8 @@ function Favorites() {
         ]
     })
 
+    const [editMode, setEditMode] = useState(false)
+
     return (
         <SafeAreaView>
             <StatusBar style="auto" />
@@ -68,16 +94,21 @@ function Favorites() {
                     <View style={{ alignSelf: 'center', flex: 1 }}>
                         <Text style={{ fontSize: 25, fontWeight: '500', alignSelf: 'center', flex: 1, textAlign: 'center' }}>Favorites</Text>
                     </View>
-                    <Text style={{ fontSize: 20, alignSelf: 'flex-end', color: "#3385ff", textAlign: 'right', flex: 1 }}>Edit</Text>
+                    <TouchableOpacity onPress={() => setEditMode(!editMode)} style={{ flex: 1, alignSelf: 'center',paddingVertical: 5 }}>
+                        <Text style={{ fontSize: 20, alignSelf: 'flex-end', color: "#3385ff", textAlign: 'right' }}>Edit</Text>
+                    </TouchableOpacity>
                 </View>
             </View>
 
             <View style={{ backgroundColor: 'white', height: device_height }}>
                 <ScrollView>
-                    <FlatList
-                        data={allFavorites.data}
-                        renderItem={({ item, index }) => <FavoriteListItem key={item.name + index} item={item} />}
-                    />
+                    <View>
+                        <FlatList
+                            data={allFavorites.data}
+                            renderItem={({ item, index }) => <FavoriteListItem key={item.name + index} editMode={editMode} item={item} />}
+                            keyExtractor={(item, index) => index.toString()}
+                        />
+                    </View>
                 </ScrollView>
             </View>
         </SafeAreaView>
