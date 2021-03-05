@@ -248,14 +248,14 @@ function ContactList({ navigation }) {
     }
 
     return (
-        <SafeAreaView style={{ ...styles.container, width: device_width, height: device_height, flexDirection: 'column' }}>
+        <SafeAreaView style={{ ...styles.container, width: device_width, height: device_height, flexDirection: 'column',backgroundColor: '#ebebeb' }}>
             <StatusBar style="auto" />
 
             <View style={{ backgroundColor: '#ebebeb', paddingBottom: 15 }}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 10, paddingVertical: 10, width: device_width, marginBottom: 10 }}>
 
-                    <TouchableOpacity onPress={() => navigation.navigate("Groups")}>
-                        <Text style={{ fontSize: 20, alignSelf: 'center', color: "#3385ff", flex: 1 }}>Groups</Text>
+                    <TouchableOpacity style={{flex: 1, alignSelf:'center'}} onPress={() => navigation.navigate("Groups")}>
+                        <Text style={{ fontSize: 20, alignSelf: 'flex-start', color: "#3385ff" }}>Groups</Text>
                     </TouchableOpacity>
 
                     <Text style={{ fontSize: 25, fontWeight: '500', alignSelf: 'center', flex: 1, textAlign: 'center' }}>Contacts</Text>
@@ -279,6 +279,7 @@ function ContactList({ navigation }) {
             </View>
 
             <SectionList
+                style={styles.sectionListContainer}
                 sections={[
                     {
                         title: "B", data: [
@@ -523,6 +524,9 @@ const styles = StyleSheet.create({
         width: 75,
         height: 75,
         borderRadius: 1200,
+    },
+    sectionListContainer: {
+        backgroundColor: 'rgba(247,247,247,1.0)'
     },
     inputBox: {
         backgroundColor: "#ffffff",
