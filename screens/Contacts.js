@@ -7,6 +7,12 @@ import { createStackNavigator, TransitionPresets } from '@react-navigation/stack
 import { LinearGradient } from 'expo-linear-gradient';
 
 
+// this is a disabled color #8E8E8F
+// this is a active color #007aff
+
+const ACTIVE_COLOR = "#007aff"
+const DISABLED_COLOR = "#8E8E8F"
+
 const ContactStack = createStackNavigator();
 
 const UserStack = createStackNavigator();
@@ -161,8 +167,22 @@ function AddToInput({ placeholder }) {
 
 function Button({ textContent, fontSize = 16, style = {}, active = true }) {
     return (
-        <TouchableOpacity style={{ ...style, fontSize: 20, alignSelf: 'center', flex: 1 }}>
+        <TouchableOpacity style={{ fontSize: 20, alignSelf: 'center', flex: 1, ...style }}>
             <Text style={{ fontSize: fontSize, fontWeight: "500", color: `${(!active) ? '#8E8E8F' : '#007aff'}` }}>{textContent}</Text>
+        </TouchableOpacity>
+    )
+}
+
+function ListItem({ textContent, fontSize = 16, style = {}, active = true, danger = false }) {
+    return (
+        <TouchableOpacity style={{ fontSize: 20 , borderBottomColor: '#dedede', ...style }}>
+            {
+                (!danger) 
+                ? 
+                <Text style={{ fontSize: fontSize, fontWeight: "normal", color: `${(!active) ? '#8E8E8F' : '#007aff'}` }}>{textContent}</Text>
+                :
+                <Text style={{ fontSize: fontSize, fontWeight: "normal", color: `#ff6969` }}>{textContent}</Text>
+            }
         </TouchableOpacity>
     )
 }
@@ -251,25 +271,104 @@ function ContactList({ navigation }) {
 
 function UserView({ route }) {
 
-    console.log(route.params.name)
+    const [firstChar, setFirstChar] = useState()
+    const [lastChar, setLastChar] = useState()
+
+    const { name } = route.params
+
+    const processChars = (name) => {
+        const nameparts = name.split(" ")
+
+        let firstChar = ''
+        let lastChar = ''
+
+        if (nameparts.length > 1) {
+            firstChar = nameparts[0].substr(0, 1)
+            lastChar = nameparts[1].substr(0, 1)
+        } else {
+            firstChar = nameparts[0].substr(0, 1)
+            lastChar = ''
+        }
+
+        return ((firstChar) ? firstChar.toUpperCase() : '') + ((lastChar) ? lastChar.toUpperCase() : '')
+    }
+
+    useEffect(() => {
+
+    }, [firstChar, lastChar])
+
+
+    const CallOption = ({ icon, text, active = true }) => (
+        <TouchableOpacity style={{ flexDirection: 'column', paddingHorizontal: 15, paddingVertical: 5, width: 84, height: 60, backgroundColor: 'white', borderRadius: 10, justifyContent: 'space-around' }}>
+            <Ionicons name={icon} style={{ alignSelf: 'center' }} color={`${(active) ? "#007aff" : "#8E8E8F"}`} size={25} />
+            <Text style={{ textAlign: 'center', fontSize: 12, color: `${(active) ? "#007aff" : "#8E8E8F"}` }}>{text}</Text>
+        </TouchableOpacity>
+    )
+
+    const ContactNumber = ({ area, number }) => (
+        <View style={{ backgroundColor: 'white', borderRadius: 10, paddingVertical: 13, paddingHorizontal: 15 }}>
+            <Text style={{ marginBottom: 5 }}>{area}</Text>
+            <Text style={{ color: ACTIVE_COLOR, fontSize: 16 }}>{number}</Text>
+        </View>
+    )
+
+    const InputGroup = ({ children }) => (
+        <View style={{ backgroundColor: 'white', borderRadius: 10, paddingVertical: 5, paddingHorizontal: 15, marginTop: 15 }}>
+            {children}
+        </View>
+    )
 
     return (
-        <SafeAreaView>
-            <Text>Hello {route.params.name}, from user view</Text>
-
-            {/* <View style={{ alignSelf: 'center' }}>
+        <SafeAreaView style={{ paddingHorizontal: 10, flex: 1,}}>
+            <View style={{ alignSelf: 'center', marginTop: 10, marginBottom: 30, flexDirection: 'column' }}>
                 <LinearGradient
-                    style={{ width: 170, height: 170, borderRadius: 82, justifyContent: 'center', flexDirection: 'row' }}
+                    style={{ width: 80, height: 80, borderRadius: 40, justifyContent: 'center', flexDirection: 'row', alignSelf: 'center', marginBottom: 10 }}
                     colors={["#bdbdbd", "#9c9c9c", "#9c9c9c"]}
                 >
-                    {
-                        (firstChar || lastChar) ?
-                            <Text style={{ alignSelf: 'center', fontSize: 60, fontWeight: 'bold', color: 'white' }}>{((firstChar) ? firstChar.toUpperCase() : '') + ((lastChar) ? lastChar.toUpperCase() : '')}</Text>
-                            :
-                            <FontAwesome style={{ alignSelf: 'center', fontSize: 100, fontWeight: 'bold', color: 'white' }} name="user" size={24} color="white" />
-                    }
+                    <Text style={{ alignSelf: 'center', fontSize: 40, fontWeight: 'bold', color: 'white' }}>{processChars(name)}</Text>
                 </LinearGradient>
-            </View> */}
+
+                <Text style={{ fontSize: 35 }}>{name}</Text>
+            </View>
+
+
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 }}>
+                <CallOption text="message" icon={'chatbox-ellipses'} />
+                <CallOption text="call" icon={'md-call'} />
+                <CallOption text="video" icon={'videocam'} />
+                <CallOption text="mail" icon={'mail'} active={false} />
+            </View>
+
+            <ScrollView contentContainerStyle={{paddingBottom: 20}} showsVerticalScrollIndicator={false}>
+                <View style={{ marginTop: 15 }}>
+                    <ContactNumber area="home" number="+233 05 845 1585" />
+                </View>
+
+                <View style={{ backgroundColor: 'white', borderRadius: 10, paddingVertical: 13, paddingHorizontal: 15, marginTop: 15, height: 100 }}>
+                    <Text>Notes</Text>
+                    <TextInput multiline={true} />
+                </View>
+
+                <InputGroup>
+                    <ListItem textContent={"Send Message"} fontSize={18} style={{ borderBottomWidth: 0.75, paddingVertical: 12 }} />
+                    <ListItem textContent={"Share Contact"} fontSize={18} style={{ borderBottomWidth: 0.75, paddingVertical: 12 }} />
+                    <ListItem textContent={"Add To Favorites"} fontSize={18} style={{ paddingVertical: 12 }} />
+                </InputGroup>
+
+                <InputGroup>
+                    <ListItem textContent={"Add to Emergency Contacts"} fontSize={18} style={{ paddingVertical: 12 }} />
+                </InputGroup>
+
+                <InputGroup>
+                    <ListItem textContent={"Share My Location"} fontSize={18} style={{ paddingVertical: 12 }} />
+                </InputGroup>
+
+                <InputGroup>
+                    <ListItem textContent={"Block this Contact"} danger={true} fontSize={18} style={{ paddingVertical: 12 }} />
+                </InputGroup>
+
+            </ScrollView>
+
 
         </SafeAreaView>
     )
@@ -327,9 +426,6 @@ function Contacts() {
 
     )
 }
-
-// this is a disabled color #8E8E8F
-// this is a active color #007aff
 
 
 const styles = StyleSheet.create({
