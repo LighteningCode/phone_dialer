@@ -40,6 +40,24 @@ function SectionHeader({ section }) {
     )
 }
 
+function GroupContacts(props) {
+
+    const { navigation } = props
+
+    useEffect(() => {
+        const subscribe = navigation.addListener('focus', () => {
+            StatusBar.setBarStyle("light-content")
+        });
+        return subscribe;
+    }, [])
+
+    return (
+        <View>
+            <Text>Hello from contact groups</Text>
+        </View>
+    )
+}
+
 function AddContacts(props) {
 
     const initialMount = useRef(true)
@@ -215,6 +233,13 @@ function ContactList({ navigation }) {
     }
 
     useEffect(() => {
+        const subscribe = navigation.addListener('focus', () => {
+            StatusBar.setBarStyle("dark-content")
+        });
+        return subscribe;
+    }, [navigation])
+
+    useEffect(() => {
         getContacts()
     }, [])
 
@@ -228,11 +253,15 @@ function ContactList({ navigation }) {
 
             <View style={{ backgroundColor: '#ebebeb', paddingBottom: 15 }}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 10, paddingVertical: 10, width: device_width, marginBottom: 10 }}>
-                    <Text style={{ fontSize: 20, alignSelf: 'center', color: "#3385ff", flex: 1 }}>Groups</Text>
+
+                    <TouchableOpacity onPress={() => navigation.navigate("Groups")}>
+                        <Text style={{ fontSize: 20, alignSelf: 'center', color: "#3385ff", flex: 1 }}>Groups</Text>
+                    </TouchableOpacity>
+
                     <Text style={{ fontSize: 25, fontWeight: '500', alignSelf: 'center', flex: 1, textAlign: 'center' }}>Contacts</Text>
                     <View style={{ alignSelf: 'center', flex: 1, alignItems: 'flex-end' }}>
 
-                        <TouchableOpacity onPress={() => props.navigation.navigate("Add")}>
+                        <TouchableOpacity onPress={() => navigation.navigate("Add")}>
                             <Ionicons name="add" size={30} color="#3385ff" />
                         </TouchableOpacity>
 
@@ -409,8 +438,18 @@ function ContactView(props) {
     }, [navigation])
 
     return (
-        <UserStack.Navigator initialRouteName="List">
+        <UserStack.Navigator
+            initialRouteName="List"
+            headerMode="none"
+            mode="modal"
+            screenOptions={{
+                gestureEnabled: true,
+                cardOverlayEnabled: true,
+                ...TransitionPresets.ModalPresentationIOS
+            }}
+        >
             <UserStack.Screen options={{ headerShown: false }} component={ContactList} name="List" />
+
             <UserStack.Screen
                 options={{
                     headerTitle: null,
@@ -421,6 +460,22 @@ function ContactView(props) {
                 }}
                 component={UserView}
                 name="User" />
+
+            <UserStack.Screen
+                options={{
+                    headerTitle: null,
+                }}
+                component={AddContacts}
+                name="Add"
+            />
+
+            <UserStack.Screen
+                options={{
+                    headerTitle: null,
+                }}
+                component={GroupContacts}
+                name="Groups"
+            />
         </UserStack.Navigator>
 
     )
@@ -443,7 +498,6 @@ function Contacts() {
             initialRouteName="Contacts"
         >
             <ContactStack.Screen name="Contacts" component={ContactView} />
-            <ContactStack.Screen name="Add" component={AddContacts} />
         </ContactStack.Navigator>
 
     )
