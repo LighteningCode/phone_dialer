@@ -40,9 +40,40 @@ function SectionHeader({ section }) {
     )
 }
 
+function Checkbox({ checked, onChange }) {
+
+    return (
+        <TouchableOpacity onPress={onChange} style={{ flexDirection: 'row' }}>
+            <View style={{
+                width: 25,
+                height: 25,
+                backgroundColor: `${(checked) ? ACTIVE_COLOR : 'white'}`,
+                borderColor: `${(!checked) ? DISABLED_COLOR : 'transparent'}`,
+                borderRadius: 50,
+                borderWidth: 0.75,
+                justifyContent: 'center',
+            }}>
+                {
+                    (checked)
+                        ?
+                        <Ionicons name="checkmark" size={15} color="white" style={{ alignSelf: 'center' }} />
+                        :
+                        null
+                }
+            </View>
+
+            <Text style={{ alignSelf: 'center', marginLeft: 15, fontSize: 20 }}>All iCloud</Text>
+        </TouchableOpacity>
+    )
+}
+
 function GroupContacts(props) {
 
     const { navigation } = props
+
+    const initialMount = useRef(true)
+    const [iCloudCheckbox, setICloudCheckbox] = useState(false)
+    
 
     useEffect(() => {
         const subscribe = navigation.addListener('focus', () => {
@@ -51,9 +82,47 @@ function GroupContacts(props) {
         return subscribe;
     }, [])
 
+    useEffect(() => {
+        if (initialMount.current) {
+            initialMount.current = false
+        }else{
+            // handle refreshes here
+        }
+    }, [iCloudCheckbox])
+
+ 
+    const handleChecked = () => {
+        let checked = iCloudCheckbox
+        setICloudCheckbox(!checked)
+    }
+
     return (
-        <View>
-            <Text>Hello from contact groups</Text>
+        <View style={{ padding: 15 }}>
+
+
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 10, marginBottom: 10 }}>
+                <TouchableOpacity onPress={() => props.navigation.goBack()} style={{ fontSize: 20, alignSelf: 'center', flex: 1 }}>
+                    <Text style={{ fontSize: 21, fontWeight: "500", color: "#007aff" }}></Text>
+                </TouchableOpacity>
+                <Text style={{ fontSize: 22, fontWeight: '600', alignSelf: 'center', flex: 3, textAlign: 'center' }}></Text>
+                <TouchableOpacity style={{ flex: 1, alignSelf: 'center' }}>
+                    <Text style={{ fontSize: 21, textAlign: 'right', fontWeight: "500", color: `${(Object.entries({}).length > 0) ? '#8E8E8F' : '#007aff'}` }}>Done</Text>
+                </TouchableOpacity>
+            </View>
+
+            <View>
+                <Text style={{ fontSize: 40, fontWeight: '700', marginBottom: 20 }}>Groups</Text>
+
+                <View>
+                    <Text>ICLOUD</Text>
+
+                    <Checkbox
+                        checked={iCloudCheckbox}
+                        onChange={handleChecked}
+                    />
+
+                </View>
+            </View>
         </View>
     )
 }
@@ -248,13 +317,13 @@ function ContactList({ navigation }) {
     }
 
     return (
-        <SafeAreaView style={{ ...styles.container, width: device_width, height: device_height, flexDirection: 'column',backgroundColor: '#ebebeb' }}>
+        <SafeAreaView style={{ ...styles.container, width: device_width, height: device_height, flexDirection: 'column', backgroundColor: '#ebebeb' }}>
             <StatusBar style="auto" />
 
             <View style={{ backgroundColor: '#ebebeb', paddingBottom: 15 }}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 10, paddingVertical: 10, width: device_width, marginBottom: 10 }}>
 
-                    <TouchableOpacity style={{flex: 1, alignSelf:'center'}} onPress={() => navigation.navigate("Groups")}>
+                    <TouchableOpacity style={{ flex: 1, alignSelf: 'center' }} onPress={() => navigation.navigate("Groups")}>
                         <Text style={{ fontSize: 20, alignSelf: 'flex-start', color: "#3385ff" }}>Groups</Text>
                     </TouchableOpacity>
 
@@ -453,7 +522,6 @@ function ContactView(props) {
 
             <UserStack.Screen
                 options={{
-                    headerTitle: null,
                     headerRight: () =>
                         <TouchableOpacity style={styles.normal_btn}>
                             <Text style={{ color: '#007aff', fontWeight: 'normal', fontSize: 20 }}>Edit</Text>
@@ -473,6 +541,11 @@ function ContactView(props) {
             <UserStack.Screen
                 options={{
                     headerTitle: null,
+                    headerRight: () =>
+                        <TouchableOpacity style={styles.normal_btn}>
+                            <Text style={{ color: '#007aff', fontWeight: 'normal', fontSize: 20 }}>Done</Text>
+                        </TouchableOpacity>
+
                 }}
                 component={GroupContacts}
                 name="Groups"
