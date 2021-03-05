@@ -84,7 +84,7 @@ function Favorites() {
     const [editMode, setEditMode] = useState(false)
 
     return (
-        <SafeAreaView>
+        <SafeAreaView style={{}}>
             <StatusBar style="auto" />
             <View>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 10, paddingVertical: 10, width: device_width, borderBottomColor: "#bdbdbd", borderBottomWidth: 0.8 }}>
@@ -130,6 +130,11 @@ const styles = StyleSheet.create({
         width: 75,
         height: 75,
         borderRadius: 1200,
+    },
+    box: {
+        width: 50,
+        height: 50,
+        backgroundColor: 'red'
     }
 });
 
