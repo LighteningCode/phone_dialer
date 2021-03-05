@@ -40,10 +40,10 @@ function SectionHeader({ section }) {
     )
 }
 
-function Checkbox({ checked, onChange, backgroundColor = 'white', size = 20 }) {
+function Checkbox({ name, checked, onChange, backgroundColor = 'white', size = 20 }) {
 
     return (
-        <TouchableOpacity activeOpacity={1} onPress={onChange} style={{ flexDirection: 'row', padding: 10, backgroundColor: backgroundColor,borderRadius: 10 }}>
+        <TouchableOpacity activeOpacity={1} onPress={onChange} style={{ flexDirection: 'row', padding: 10, backgroundColor: backgroundColor, borderRadius: 10 }}>
             <View style={{
                 width: size,
                 height: size,
@@ -62,7 +62,7 @@ function Checkbox({ checked, onChange, backgroundColor = 'white', size = 20 }) {
                 }
             </View>
 
-            <Text style={{ alignSelf: 'center', marginLeft: 15, fontSize: 20 }}>All iCloud</Text>
+            <Text style={{ alignSelf: 'center', marginLeft: 15, fontSize: 20 }}>{name}</Text>
         </TouchableOpacity>
     )
 }
@@ -72,7 +72,8 @@ function GroupContacts(props) {
     const { navigation } = props
 
     const initialMount = useRef(true)
-    const [iCloudCheckbox, setICloudCheckbox] = useState(false)
+    const [iCloudCheckbox, setICloudCheckbox] = useState(true)
+    const [gMailCheckbox, setGMailCheckbox] = useState(false)
 
 
     useEffect(() => {
@@ -88,24 +89,32 @@ function GroupContacts(props) {
         } else {
             // handle refreshes here
         }
-    }, [iCloudCheckbox])
+    }, [iCloudCheckbox, gMailCheckbox])
 
 
-    const handleChecked = () => {
-        let checked = iCloudCheckbox
-        setICloudCheckbox(!checked)
-    }
+    const GroupView = ({ name, checked, title, onChange }) => (
+        <View style={{ marginVertical: 10 }}>
+            <Text>{title}</Text>
+            <View style={{ marginTop: 10 }}>
+                <Checkbox
+                    name={name}
+                    checked={checked}
+                    onChange={onChange}
+                />
+            </View>
+        </View>
+    )
 
     return (
-        <View style={{ padding: 15 }}>
+        <View style={{ padding: 15, flex: 1 }}>
 
 
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 10, marginBottom: 10 }}>
-                <TouchableOpacity onPress={() => props.navigation.goBack()} style={{ fontSize: 20, alignSelf: 'center', flex: 1 }}>
+                <TouchableOpacity  style={{ fontSize: 20, alignSelf: 'center', flex: 1 }}>
                     <Text style={{ fontSize: 21, fontWeight: "500", color: "#007aff" }}></Text>
                 </TouchableOpacity>
                 <Text style={{ fontSize: 22, fontWeight: '600', alignSelf: 'center', flex: 3, textAlign: 'center' }}></Text>
-                <TouchableOpacity style={{ flex: 1, alignSelf: 'center' }}>
+                <TouchableOpacity onPress={() => props.navigation.goBack()} style={{ flex: 1, alignSelf: 'center' }}>
                     <Text style={{ fontSize: 21, textAlign: 'right', fontWeight: "500", color: `${(Object.entries({}).length > 0) ? '#8E8E8F' : '#007aff'}` }}>Done</Text>
                 </TouchableOpacity>
             </View>
@@ -113,19 +122,26 @@ function GroupContacts(props) {
             <View>
                 <Text style={{ fontSize: 40, fontWeight: '700', marginBottom: 20 }}>Groups</Text>
 
-                <View>
-                    <Text>ICLOUD</Text>
+                <GroupView
+                    title="ICLOUD"
+                    name="All iCloud"
+                    checked={iCloudCheckbox}
+                    onChange={() => setICloudCheckbox(!iCloudCheckbox)}
+                />
 
-
-                    <Checkbox
-                        checked={iCloudCheckbox}
-                        onChange={handleChecked}
-                    />
-
-
-
-                </View>
+                <GroupView
+                    title="GMAIL"
+                    name="All Gmail"
+                    checked={gMailCheckbox}
+                    onChange={() => setGMailCheckbox(!gMailCheckbox)}
+                />
             </View>
+
+            <TouchableOpacity style={{position:'absolute',bottom: 0,padding: 10,width: device_width}}>
+                <Text style={{ color: ACTIVE_COLOR,fontSize: 18,textAlign: 'center' }}>Hide all contacts</Text>
+            </TouchableOpacity>
+
+
         </View>
     )
 }
