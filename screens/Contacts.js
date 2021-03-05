@@ -5,6 +5,7 @@ import { Ionicons, FontAwesome5, FontAwesome } from '@expo/vector-icons';
 import { TextInput } from 'react-native-gesture-handler';
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import { LinearGradient } from 'expo-linear-gradient';
+import * as _Contacts from 'expo-contacts';
 
 
 // this is a disabled color #8E8E8F
@@ -175,13 +176,13 @@ function Button({ textContent, fontSize = 16, style = {}, active = true }) {
 
 function ListItem({ textContent, fontSize = 16, style = {}, active = true, danger = false }) {
     return (
-        <TouchableOpacity style={{ fontSize: 20 , borderBottomColor: '#dedede', ...style }}>
+        <TouchableOpacity style={{ fontSize: 20, borderBottomColor: '#dedede', ...style }}>
             {
-                (!danger) 
-                ? 
-                <Text style={{ fontSize: fontSize, fontWeight: "normal", color: `${(!active) ? '#8E8E8F' : '#007aff'}` }}>{textContent}</Text>
-                :
-                <Text style={{ fontSize: fontSize, fontWeight: "normal", color: `#ff6969` }}>{textContent}</Text>
+                (!danger)
+                    ?
+                    <Text style={{ fontSize: fontSize, fontWeight: "normal", color: `${(!active) ? '#8E8E8F' : '#007aff'}` }}>{textContent}</Text>
+                    :
+                    <Text style={{ fontSize: fontSize, fontWeight: "normal", color: `#ff6969` }}>{textContent}</Text>
             }
         </TouchableOpacity>
     )
@@ -195,6 +196,27 @@ function Input({ placeholder, name = "input", onChange = () => { console.log("In
 }
 
 function ContactList({ navigation }) {
+
+    const getContacts = async () => {
+        const status = await _Contacts.requestPermissionsAsync();
+        console.log(status)
+        if (status === 'granted') {
+            const data = await _Contacts.getContactsAsync({
+                fields: [_Contacts.Fields.Emails]
+            })
+
+            console.log(data.data.length)
+
+            if (data.length > 0) {
+                const contact = data[0];
+                console.log(contact)
+            }
+        }
+    }
+
+    useEffect(() => {
+        getContacts()
+    }, [])
 
     const OpenUserView = (userData) => {
         navigation.navigate('User', userData)
@@ -211,7 +233,7 @@ function ContactList({ navigation }) {
                     <View style={{ alignSelf: 'center', flex: 1, alignItems: 'flex-end' }}>
 
                         <TouchableOpacity onPress={() => props.navigation.navigate("Add")}>
-                            <Ionicons name="add" size="30" color="#3385ff" />
+                            <Ionicons name="add" size={30} color="#3385ff" />
                         </TouchableOpacity>
 
                     </View>
@@ -220,7 +242,7 @@ function ContactList({ navigation }) {
                 <View style={{ flexDirection: 'row', justifyContent: 'center', width: device_width }}>
                     <View style={{ backgroundColor: '#e0e0e0', height: 35, width: device_width * 0.95, paddingHorizontal: 10, borderRadius: 10, flexDirection: 'row' }}>
                         <View style={{ justifyContent: 'center', marginRight: 7 }}>
-                            <Ionicons name='search' color="#9c9c9c" size="20" />
+                            <Ionicons name='search' color="#9c9c9c" size={20} />
                         </View>
                         <TextInput placeholder="Search" />
                     </View>
@@ -274,7 +296,7 @@ function UserView({ route }) {
     const [firstChar, setFirstChar] = useState()
     const [lastChar, setLastChar] = useState()
 
-    const { name } = route.params
+    const { name, area, } = route.params
 
     const processChars = (name) => {
         const nameparts = name.split(" ")
@@ -319,7 +341,7 @@ function UserView({ route }) {
     )
 
     return (
-        <SafeAreaView style={{ paddingHorizontal: 10, flex: 1,}}>
+        <SafeAreaView style={{ paddingHorizontal: 10, flex: 1, }}>
             <View style={{ alignSelf: 'center', marginTop: 10, marginBottom: 30, flexDirection: 'column' }}>
                 <LinearGradient
                     style={{ width: 80, height: 80, borderRadius: 40, justifyContent: 'center', flexDirection: 'row', alignSelf: 'center', marginBottom: 10 }}
@@ -339,7 +361,7 @@ function UserView({ route }) {
                 <CallOption text="mail" icon={'mail'} active={false} />
             </View>
 
-            <ScrollView contentContainerStyle={{paddingBottom: 20}} showsVerticalScrollIndicator={false}>
+            <ScrollView contentContainerStyle={{ paddingBottom: 20 }} showsVerticalScrollIndicator={false}>
                 <View style={{ marginTop: 15 }}>
                     <ContactNumber area="home" number="+233 05 845 1585" />
                 </View>
