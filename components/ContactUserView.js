@@ -111,14 +111,14 @@ function UserView({ route, navigation }) {
             </View>
 
 
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10, paddingHorizontal: (name !== "recent-call") ? 10 : 0 }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10, paddingHorizontal: (route.name === "recent-call") ? 10 : 0 }}>
                 <CallOption text="message" icon={'chatbox-ellipses'} />
                 <CallOption text="call" icon={'md-call'} />
                 <CallOption text="video" icon={'videocam'} />
                 <CallOption text="mail" icon={'mail'} active={false} />
             </View>
 
-            <ScrollView contentContainerStyle={{ paddingBottom: 20, paddingHorizontal: (name !== "recent-call") ? 10 : 0 }} showsVerticalScrollIndicator={false}>
+            <ScrollView contentContainerStyle={{ paddingBottom: 20, paddingHorizontal: (route.name === "recent-call") ? 10 : 0 }} showsVerticalScrollIndicator={false}>
                 <View style={{ marginTop: 15 }}>
                     <ContactNumber area="home" number={number} />
                 </View>
