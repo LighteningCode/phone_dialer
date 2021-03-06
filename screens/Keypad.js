@@ -8,6 +8,7 @@ import { Audio } from "expo-av";
 import * as Haptics from 'expo-haptics';
 import AddContacts from '../components/AddToContacts';
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
+import * as Animatable from 'react-native-animatable';
 
 let device_width = Dimensions.get("window").width;
 let device_height = Dimensions.get("window").height;
@@ -139,7 +140,6 @@ function Dialer(props) {
     }
 
 
-
     return (
         <View style={styles.container}>
             <StatusBar style="auto" />
@@ -200,7 +200,7 @@ function Dialer(props) {
                     </View>
 
                     <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
-                        <CustomPhoneButton custom_style={{ backgroundColor: 'rgba(52, 52, 52, 0.0)' }} />
+                        <CustomPhoneButton custom_style={{ backgroundColor: 'rgba(52, 52, 52, 0.0)' }} ></CustomPhoneButton>
 
                         <CustomPhoneButton custom_style={{ backgroundColor: '#02c902' }}>
                             <Ionicons name={"md-call"} color="white" size={35} />
@@ -211,9 +211,12 @@ function Dialer(props) {
                             (dial.number === "") ?
                                 <CustomPhoneButton custom_style={{ backgroundColor: 'rgba(52, 52, 52, 0.0)' }} />
                                 :
-                                <CustomPhoneButton _onPress={handleDelete} _longPress={deleteRepeat} _onPressOut={stopDeleting} custom_style={{ backgroundColor: 'rgba(52, 52, 52, 0.0)' }}>
-                                    <Ionicons name="backspace" size={30} color="gray" />
-                                </CustomPhoneButton>
+                                <Animatable.View animation="fadeIn" duration={1000}>
+                                    <CustomPhoneButton _onPress={handleDelete} _longPress={deleteRepeat} _onPressOut={stopDeleting} custom_style={{ backgroundColor: 'rgba(52, 52, 52, 0.0)' }}>
+                                        <Ionicons name="backspace" size={30} color="gray" />
+                                    </CustomPhoneButton >
+                                </Animatable.View>
+
                         }
 
 
