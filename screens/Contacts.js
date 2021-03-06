@@ -151,7 +151,7 @@ function GroupContacts(props) {
 
 
 
-function ContactList({ navigation }) {
+function ContactList({ navigation, route }) {
 
     const getContacts = async () => {
         const status = await _Contacts.requestPermissionsAsync();
@@ -190,20 +190,35 @@ function ContactList({ navigation }) {
             <StatusBar style="auto" />
 
             <View style={{ backgroundColor: '#ebebeb', paddingBottom: 15 }}>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 10, paddingVertical: 10, width: device_width, marginBottom: 10 }}>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 10, paddingVertical: (!route.name.includes("Favorites")) ? 10 : 0, width: device_width, marginBottom: 10 }}>
 
-                    <TouchableOpacity style={{ flex: 1, alignSelf: 'center' }} onPress={() => navigation.navigate("Groups")}>
-                        <Text style={{ fontSize: 20, alignSelf: 'flex-start', color: "#3385ff" }}>Groups</Text>
-                    </TouchableOpacity>
+                    {
+                        (!route.name.includes("Favorites"))
+                            ?
+                            <TouchableOpacity style={{ flex: 1, alignSelf: 'center' }} onPress={() => navigation.navigate("Groups")}>
+                                <Text style={{ fontSize: 20, alignSelf: 'flex-start', color: "#3385ff" }}>Groups</Text>
+                            </TouchableOpacity>
+                            :
+                            null
+                    }
+
 
                     <Text style={{ fontSize: 25, fontWeight: '500', alignSelf: 'center', flex: 1, textAlign: 'center' }}>Contacts</Text>
-                    <View style={{ alignSelf: 'center', flex: 1, alignItems: 'flex-end' }}>
 
-                        <TouchableOpacity onPress={() => navigation.navigate("Add")}>
-                            <Ionicons name="add" size={30} color="#3385ff" />
-                        </TouchableOpacity>
+                    {
+                        (!route.name.includes("Favorites"))
+                            ?
+                            <View style={{ alignSelf: 'center', flex: 1, alignItems: 'flex-end' }}>
+                                <TouchableOpacity onPress={() => navigation.navigate("Add")}>
+                                    <Ionicons name="add" size={30} color="#3385ff" />
+                                </TouchableOpacity>
+                            </View>
+                            :
+                            null
+                    }
 
-                    </View>
+
+
                 </View>
 
                 <View style={{ flexDirection: 'row', justifyContent: 'center', width: device_width }}>
@@ -250,7 +265,7 @@ function ContactList({ navigation }) {
                         ]
                     },
                 ]}
-                renderItem={({ item }) => <SectionListItem _onPress={() => OpenUserView(item)} key={`item${item}`} item={item} />}
+                renderItem={({ item }) => <SectionListItem _onPress={((!route.name.includes("Favorites"))) ? () => OpenUserView(item) : () => {navigation.goBack()}} key={`item${item}`} item={item} />}
                 renderSectionHeader={({ section }) => <SectionHeader key={`section${section}`} section={section} />}
                 keyExtractor={(item, index) => index.toString()}
             />
@@ -401,5 +416,5 @@ const styles = StyleSheet.create({
     },
 });
 
-
+export { ContactList }
 export default Contacts;
