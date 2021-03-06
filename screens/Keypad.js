@@ -157,7 +157,7 @@ function Dialer(props) {
                             (dial.number === "") ?
                                 <Text></Text>
                                 :
-                                <TouchableOpacity onPress={() => navigation.navigate("AddContact")}>
+                                <TouchableOpacity onPress={() => navigation.navigate("AddContactKeypad")}>
                                     <Text style={{ textAlign: 'center', fontSize: 20, color: '#0288f5' }}>Add contact</Text>
                                 </TouchableOpacity>
                         }
@@ -233,7 +233,7 @@ function KeyPad() {
             headerMode="none"
         >
             <KeypadStack.Screen name="Dial" component={Dialer} />
-            <KeypadStack.Screen name="AddContact" component={AddContacts} />
+            <KeypadStack.Screen name="AddContactKeypad" component={AddContacts} />
         </KeypadStack.Navigator>
     )
 }

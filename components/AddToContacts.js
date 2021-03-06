@@ -82,8 +82,7 @@ function AddContacts(props) {
     const [firstChar, setFirstChar] = useState(null)
     const [lastChar, setLastChar] = useState(null)
 
-    const { navigation } = props
-
+    const { navigation,route } = props
 
     const handleTextChange = (text, name) => {
 
@@ -114,7 +113,11 @@ function AddContacts(props) {
 
     useEffect(() => {
         const subscribe = navigation.addListener('focus', () => {
-            StatusBar.setBarStyle("light-content")
+            if (route.name === "AddContactKeypad") {
+                StatusBar.setBarStyle("dark-content")
+            }else if(route.name === "Add"){
+                StatusBar.setBarStyle("light-content")
+            }
         });
         return subscribe;
     }, [navigation])
