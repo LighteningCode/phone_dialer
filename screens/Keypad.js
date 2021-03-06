@@ -6,10 +6,13 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
 import { Audio } from "expo-av";
 import * as Haptics from 'expo-haptics';
+import AddContacts from '../components/AddToContacts';
+import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 
 let device_width = Dimensions.get("window").width;
 let device_height = Dimensions.get("window").height;
 
+const KeypadStack = createStackNavigator()
 
 function PhoneButton({ input, _onPress, number, subtext }) {
     return (
@@ -55,11 +58,13 @@ function CustomPhoneButton({ children, input, _onPress, _longPress, _onPressOut,
 }
 
 
-function KeyPad() {
+function Dialer(props) {
     const [dial, setDial] = useState({ number: '' })
     const initailMount = useRef(true)
     const deleteTimer = useRef(null)
     const [sound, setSound] = useState()
+
+    const { navigation } = props
 
     useEffect(() => {
         if (initailMount.current) {
@@ -152,7 +157,7 @@ function KeyPad() {
                             (dial.number === "") ?
                                 <Text></Text>
                                 :
-                                <TouchableOpacity>
+                                <TouchableOpacity onPress={() => navigation.navigate("AddContact")}>
                                     <Text style={{ textAlign: 'center', fontSize: 20, color: '#0288f5' }}>Add contact</Text>
                                 </TouchableOpacity>
                         }
@@ -219,6 +224,18 @@ function KeyPad() {
 
         </View>
     );
+}
+
+function KeyPad() {
+    return (
+        <KeypadStack.Navigator
+            initialRouteName="Dial"
+            headerMode="none"
+        >
+            <KeypadStack.Screen name="Dial" component={Dialer} />
+            <KeypadStack.Screen name="AddContact" component={AddContacts} />
+        </KeypadStack.Navigator>
+    )
 }
 
 
