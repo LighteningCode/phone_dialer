@@ -5,12 +5,16 @@ import { Ionicons, FontAwesome5, FontAwesome } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { FlatList } from 'react-native-gesture-handler';
 import * as Animatable from 'react-native-animatable';
+import { createStackNavigator } from '@react-navigation/stack';
 
 let device_width = Dimensions.get("window").width;
 let device_height = Dimensions.get("window").height;
 
 const ACTIVE_COLOR = "#007aff"
 const DISABLED_COLOR = "#8E8E8F"
+
+
+const FavoriteStack = createStackNavigator();
 
 
 function FavoriteListItem({ item, editMode }) {
@@ -71,8 +75,8 @@ function FavoriteListItem({ item, editMode }) {
     )
 }
 
-
-function Favorites() {
+function FavoritesList({navigation}) {
+    
 
     const [allFavorites, setAllFavories] = useState({
         data: [
@@ -90,15 +94,15 @@ function Favorites() {
         <SafeAreaView style={{}}>
             <StatusBar style="auto" />
             <View>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 10, paddingVertical: 10, width: device_width, borderBottomColor: "#bdbdbd", borderBottomWidth: 0.8 }}>
-                    <View style={{ alignSelf: 'center', flex: 1, alignItems: 'flex-start' }}>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 20, paddingVertical: 10, width: device_width, borderBottomColor: "#bdbdbd", borderBottomWidth: 0.8 }}>
+                    <TouchableOpacity onPress={()=> navigation.navigate("AddFavorites")} style={{ alignSelf: 'center', flex: 1, alignItems: 'flex-start' }}>
                         <Ionicons name="add" size="30" color="#3385ff" />
-                    </View>
+                    </TouchableOpacity>
                     <View style={{ alignSelf: 'center', flex: 1 }}>
                         <Text style={{ fontSize: 25, fontWeight: '500', alignSelf: 'center', flex: 1, textAlign: 'center' }}>Favorites</Text>
                     </View>
                     <TouchableOpacity onPress={() => setEditMode(!editMode)} style={{ flex: 1, alignSelf: 'center', paddingVertical: 5 }}>
-                        <Text style={{ fontSize: 20, alignSelf: 'flex-end', color: "#3385ff", textAlign: 'right' }}>Edit</Text>
+                        <Text style={{ fontSize: 20, alignSelf: 'flex-end', color: "#3385ff", textAlign: 'right', fontWeight: (editMode) ? '600' : 'normal'   }}>{(editMode) ? "Done" : "Edit" }</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -115,6 +119,19 @@ function Favorites() {
                 </ScrollView>
             </View>
         </SafeAreaView>
+    )
+}
+
+
+function Favorites({navigation}) {
+    return(
+        <FavoriteStack.Navigator 
+        headerMode='none' 
+        initialRouteName="FavoriteList"
+        >
+            <FavoriteStack.Screen name="FavoriteList" component={FavoritesList}/>
+            {/* <FavoriteStack.Screen name="AddFavorites" component={FavoritesList}/> */}
+        </FavoriteStack.Navigator>
     )
 }
 
