@@ -62,15 +62,15 @@ function Recents() {
 
     const [allCalls, setAllCalls] = useState({
         data: [
-            { key: '055 756 4654', time: "11:12 AM", called: false, missed: false, area: "Ghana" },
-            { key: 'Mercedex AMG GTR', time: "12:59pm", called: true, missed: true, area: "Whatsapp Audio" },
-            { key: 'Mum', time: "Yesterday", called: false, missed: false, area: "Ghana" },
-            { key: 'Emmanuel Ashitey', time: "Yesterday", called: true, missed: true, area: "Mobile" },
-            { key: '055 134 2357 (2)', time: "Yesterday", called: false, missed: true, area: "Ghana" },
-            { key: '030 313 3009', time: "Yesterday", called: false, missed: true, area: "Ghana" },
-            { key: '059 221 4017', time: "Yesterday", called: false, missed: false, area: "Ghana" },
-            { key: 'Mrs. Matilda S. Wilson', time: "Yesterday", called: false, missed: false, area: "home" },
-            { key: 'Michael Agbo Soli (2)', time: "Yesterday", called: false, missed: false, area: "mobile" },
+            { key: '055 756 4654', time: "11:12 AM", called: false, missed: false, area: "Ghana", number: "+233 24 236 5898" },
+            { key: 'Mercedex AMG GTR', time: "12:59pm", called: true, missed: true, area: "Whatsapp Audio", number: "+233 20 236 5898"},
+            { key: 'Mum', time: "Yesterday", called: false, missed: false, area: "Ghana", number: "+233 26 236 5898" },
+            { key: 'Emmanuel Ashitey', time: "Yesterday", called: true, missed: true, area: "Mobile", number: "+233 50 236 5898" },
+            { key: '055 134 2357 (2)', time: "Yesterday", called: false, missed: true, area: "Ghana", number: "+233 23 555 7711" },
+            { key: '030 313 3009', time: "Yesterday", called: false, missed: true, area: "Ghana", number: "+233 27 236 5898" },
+            { key: '059 221 4017', time: "Yesterday", called: false, missed: false, area: "Ghana", number: "+233 27 236 1144" },
+            { key: 'Mrs. Matilda S. Wilson', time: "Yesterday", called: false, missed: false, area: "home", number: "+233 24 222 0055" },
+            { key: 'Michael Agbo Soli (2)', time: "Yesterday", called: false, missed: false, area: "mobile", number: "+233 23 252 1117" },
         ]
     })
 

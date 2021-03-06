@@ -7,6 +7,7 @@ import { createStackNavigator, TransitionPresets } from '@react-navigation/stack
 import { LinearGradient } from 'expo-linear-gradient';
 import * as _Contacts from 'expo-contacts';
 import AddContacts from '../components/AddToContacts';
+import UserView from '../components/ContactUserView';
 
 
 // this is a disabled color #8E8E8F
@@ -111,7 +112,7 @@ function GroupContacts(props) {
 
 
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 10, marginBottom: 10 }}>
-                <TouchableOpacity  style={{ fontSize: 20, alignSelf: 'center', flex: 1 }}>
+                <TouchableOpacity style={{ fontSize: 20, alignSelf: 'center', flex: 1 }}>
                     <Text style={{ fontSize: 21, fontWeight: "500", color: "#007aff" }}></Text>
                 </TouchableOpacity>
                 <Text style={{ fontSize: 22, fontWeight: '600', alignSelf: 'center', flex: 3, textAlign: 'center' }}></Text>
@@ -138,8 +139,8 @@ function GroupContacts(props) {
                 />
             </View>
 
-            <TouchableOpacity style={{position:'absolute',bottom: 0,padding: 10,width: device_width}}>
-                <Text style={{ color: ACTIVE_COLOR,fontSize: 18,textAlign: 'center' }}>Hide all contacts</Text>
+            <TouchableOpacity style={{ position: 'absolute', bottom: 0, padding: 10, width: device_width }}>
+                <Text style={{ color: ACTIVE_COLOR, fontSize: 18, textAlign: 'center' }}>Hide all contacts</Text>
             </TouchableOpacity>
 
 
@@ -148,19 +149,6 @@ function GroupContacts(props) {
 }
 
 
-function ListItem({ textContent, fontSize = 16, style = {}, active = true, danger = false }) {
-    return (
-        <TouchableOpacity style={{ fontSize: 20, borderBottomColor: '#dedede', ...style }}>
-            {
-                (!danger)
-                    ?
-                    <Text style={{ fontSize: fontSize, fontWeight: "normal", color: `${(!active) ? '#8E8E8F' : '#007aff'}` }}>{textContent}</Text>
-                    :
-                    <Text style={{ fontSize: fontSize, fontWeight: "normal", color: `#ff6969` }}>{textContent}</Text>
-            }
-        </TouchableOpacity>
-    )
-}
 
 
 function ContactList({ navigation }) {
@@ -233,32 +221,32 @@ function ContactList({ navigation }) {
                 sections={[
                     {
                         title: "B", data: [
-                            { name: "Belvis Acheampong", area: "mobile", },
-                            { name: "Belinda Kumaesi", area: "mobile" },
-                            { name: "Brenda Abu", area: "mobile" },
+                            { name: "Belvis Acheampong", area: "mobile", number: "+233 23 236 5898" },
+                            { name: "Belinda Kumaesi", area: "mobile", number: "+233 25 115 5898" },
+                            { name: "Brenda Abu", area: "mobile", number: "+233 24 236 255" },
                         ]
                     },
                     {
                         title: "C",
                         data: [
-                            { name: "Calvin Asantey", area: "mobile" },
-                            { name: "Cerry Assumani", area: "mobile" },
-                            { name: "Cindy Armah", area: "mobile" },
+                            { name: "Calvin Asantey", area: "mobile", number: "+233 20 336 5898" },
+                            { name: "Cerry Assumani", area: "mobile", number: "+233 23 222 2256" },
+                            { name: "Cindy Armah", area: "mobile", number: "+233 50 236 5898" },
                         ]
                     },
                     {
                         title: "D",
                         data: [
-                            { name: "Delvis Agbe", area: "mobile" },
-                            { name: "Declan Nyankah", area: "mobile" },
-                            { name: "Dennis Brown", area: "mobile" },
+                            { name: "Delvis Agbe", area: "mobile", number: "+233 26 236 1585" },
+                            { name: "Declan Nyankah", area: "mobile", number: "+233 24 236 5898" },
+                            { name: "Dennis Brown", area: "mobile", number: "+233 23 303 1133" },
                         ]
                     },
                     {
                         title: "E", data: [
-                            { name: "Elvis Agbesi", area: "mobile" },
-                            { name: "Ezra Kusi", area: "mobile" },
-                            { name: "Elias Famiche", area: "mobile" },
+                            { name: "Elvis Agbesi", area: "mobile", number: "+233 23 236 5898" },
+                            { name: "Ezra Kusi", area: "mobile", number: "+233 23 236 5898" },
+                            { name: "Elias Famiche", area: "mobile", number: "+233 23 236 5898" },
                         ]
                     },
                 ]}
@@ -271,117 +259,6 @@ function ContactList({ navigation }) {
     )
 }
 
-function UserView({ route,navigation }) {
-
-    const [firstChar, setFirstChar] = useState()
-    const [lastChar, setLastChar] = useState()
-
-    const { name, area, } = route.params
-
-    const processChars = (name) => {
-        const nameparts = name.split(" ")
-
-        let firstChar = ''
-        let lastChar = ''
-
-        if (nameparts.length > 1) {
-            firstChar = nameparts[0].substr(0, 1)
-            lastChar = nameparts[1].substr(0, 1)
-        } else {
-            firstChar = nameparts[0].substr(0, 1)
-            lastChar = ''
-        }
-
-        return ((firstChar) ? firstChar.toUpperCase() : '') + ((lastChar) ? lastChar.toUpperCase() : '')
-    }
-
-    useEffect(() => {
-
-    }, [firstChar, lastChar])
-
-    useEffect(() => {
-        const subscribe = navigation.addListener('focus', () => {
-            StatusBar.setBarStyle("light-content")
-        });
-        return subscribe;
-    }, [navigation])
-
-
-    const CallOption = ({ icon, text, active = true }) => (
-        <TouchableOpacity style={{ flexDirection: 'column', paddingHorizontal: 15, paddingVertical: 5, width: 84, height: 60, backgroundColor: 'white', borderRadius: 10, justifyContent: 'space-around' }}>
-            <Ionicons name={icon} style={{ alignSelf: 'center' }} color={`${(active) ? "#007aff" : "#8E8E8F"}`} size={25} />
-            <Text style={{ textAlign: 'center', fontSize: 12, color: `${(active) ? "#007aff" : "#8E8E8F"}` }}>{text}</Text>
-        </TouchableOpacity>
-    )
-
-    const ContactNumber = ({ area, number }) => (
-        <View style={{ backgroundColor: 'white', borderRadius: 10, paddingVertical: 13, paddingHorizontal: 15 }}>
-            <Text style={{ marginBottom: 5 }}>{area}</Text>
-            <Text style={{ color: ACTIVE_COLOR, fontSize: 16 }}>{number}</Text>
-        </View>
-    )
-
-    const InputGroup = ({ children }) => (
-        <View style={{ backgroundColor: 'white', borderRadius: 10, paddingVertical: 5, paddingHorizontal: 15, marginTop: 15 }}>
-            {children}
-        </View>
-    )
-
-    return (
-        <SafeAreaView style={{ paddingHorizontal: 10, flex: 1, }}>
-            <View style={{ alignSelf: 'center', marginTop: 10, marginBottom: 30, flexDirection: 'column' }}>
-                <LinearGradient
-                    style={{ width: 80, height: 80, borderRadius: 40, justifyContent: 'center', flexDirection: 'row', alignSelf: 'center', marginBottom: 10 }}
-                    colors={["#bdbdbd", "#9c9c9c", "#9c9c9c"]}
-                >
-                    <Text style={{ alignSelf: 'center', fontSize: 40, fontWeight: 'bold', color: 'white' }}>{processChars(name)}</Text>
-                </LinearGradient>
-
-                <Text style={{ fontSize: 35 }}>{name}</Text>
-            </View>
-
-
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 }}>
-                <CallOption text="message" icon={'chatbox-ellipses'} />
-                <CallOption text="call" icon={'md-call'} />
-                <CallOption text="video" icon={'videocam'} />
-                <CallOption text="mail" icon={'mail'} active={false} />
-            </View>
-
-            <ScrollView contentContainerStyle={{ paddingBottom: 20 }} showsVerticalScrollIndicator={false}>
-                <View style={{ marginTop: 15 }}>
-                    <ContactNumber area="home" number="+233 05 845 1585" />
-                </View>
-
-                <View style={{ backgroundColor: 'white', borderRadius: 10, paddingVertical: 13, paddingHorizontal: 15, marginTop: 15, height: 100 }}>
-                    <Text>Notes</Text>
-                    <TextInput multiline={true} />
-                </View>
-
-                <InputGroup>
-                    <ListItem textContent={"Send Message"} fontSize={18} style={{ borderBottomWidth: 0.75, paddingVertical: 12 }} />
-                    <ListItem textContent={"Share Contact"} fontSize={18} style={{ borderBottomWidth: 0.75, paddingVertical: 12 }} />
-                    <ListItem textContent={"Add To Favorites"} fontSize={18} style={{ paddingVertical: 12 }} />
-                </InputGroup>
-
-                <InputGroup>
-                    <ListItem textContent={"Add to Emergency Contacts"} fontSize={18} style={{ paddingVertical: 12 }} />
-                </InputGroup>
-
-                <InputGroup>
-                    <ListItem textContent={"Share My Location"} fontSize={18} style={{ paddingVertical: 12 }} />
-                </InputGroup>
-
-                <InputGroup>
-                    <ListItem textContent={"Block this Contact"} danger={true} fontSize={18} style={{ paddingVertical: 12 }} />
-                </InputGroup>
-
-            </ScrollView>
-
-
-        </SafeAreaView>
-    )
-}
 
 
 function ContactView(props) {
