@@ -4,6 +4,7 @@ import { Dimensions, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacit
 import { Ionicons, FontAwesome5, FontAwesome } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { FlatList } from 'react-native-gesture-handler';
+import * as Animatable from 'react-native-animatable';
 
 let device_width = Dimensions.get("window").width;
 let device_height = Dimensions.get("window").height;
@@ -20,11 +21,11 @@ function FavoriteListItem({ item, editMode }) {
             {
                 (editMode)
                     ?
-                    <View style={{ flex: 1, justifyContent: 'center', paddingLeft: 10 }}>
+                    <Animatable.View animation="fadeInLeft" easing="ease-out" duration={400} style={{ flex: 1, justifyContent: 'center', paddingLeft: 10 }}>
                         <TouchableOpacity style={{ alignSelf: 'center' }} >
                             <FontAwesome5 name="minus-circle" size={18} color="#ff2424" />
                         </TouchableOpacity>
-                    </View>
+                    </Animatable.View>
                     :
                     null
             }
@@ -57,7 +58,9 @@ function FavoriteListItem({ item, editMode }) {
                     {
                         (editMode)
                             ?
-                            <FontAwesome5 style={{ alignSelf: 'flex-end', marginRight: 5 }} name="grip-lines" size={18} color={DISABLED_COLOR} />
+                            <Animatable.View animation="fadeInRight" easing="ease-out" duration={400}>
+                                <FontAwesome5 style={{ alignSelf: 'flex-end', marginRight: 5 }} name="grip-lines" size={18} color={DISABLED_COLOR} />
+                            </Animatable.View>
                             :
                             <Ionicons style={{ alignSelf: 'flex-end', marginRight: 5 }} color="#0084ff" name="information-circle-outline" size={22} />
                     }
@@ -94,7 +97,7 @@ function Favorites() {
                     <View style={{ alignSelf: 'center', flex: 1 }}>
                         <Text style={{ fontSize: 25, fontWeight: '500', alignSelf: 'center', flex: 1, textAlign: 'center' }}>Favorites</Text>
                     </View>
-                    <TouchableOpacity onPress={() => setEditMode(!editMode)} style={{ flex: 1, alignSelf: 'center',paddingVertical: 5 }}>
+                    <TouchableOpacity onPress={() => setEditMode(!editMode)} style={{ flex: 1, alignSelf: 'center', paddingVertical: 5 }}>
                         <Text style={{ fontSize: 20, alignSelf: 'flex-end', color: "#3385ff", textAlign: 'right' }}>Edit</Text>
                     </TouchableOpacity>
                 </View>
