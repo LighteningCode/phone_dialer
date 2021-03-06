@@ -409,7 +409,7 @@ function ContactList({ navigation }) {
     )
 }
 
-function UserView({ route }) {
+function UserView({ route,navigation }) {
 
     const [firstChar, setFirstChar] = useState()
     const [lastChar, setLastChar] = useState()
@@ -436,6 +436,13 @@ function UserView({ route }) {
     useEffect(() => {
 
     }, [firstChar, lastChar])
+
+    useEffect(() => {
+        const subscribe = navigation.addListener('focus', () => {
+            StatusBar.setBarStyle("light-content")
+        });
+        return subscribe;
+    }, [navigation])
 
 
     const CallOption = ({ icon, text, active = true }) => (
