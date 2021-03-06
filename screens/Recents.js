@@ -2,18 +2,19 @@ import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useRef, useState } from 'react';
 import { Dimensions, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, FlatList } from 'react-native';
 import { Ionicons, MaterialIcons, FontAwesome5, FontAwesome } from '@expo/vector-icons';
-
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import SegmentedControl from '@react-native-segmented-control/segmented-control';
 import * as Animatable from 'react-native-animatable';
+import UserView from '../components/ContactUserView';
+import { createStackNavigator } from '@react-navigation/stack';
 
 let device_width = Dimensions.get("window").width;
 let device_height = Dimensions.get("window").height;
 
-const Tab = createMaterialTopTabNavigator()
+const Recent = createStackNavigator()
 
 
-function RecentListItem({ item, editMode }) {
+function RecentListItem({ item, editMode, onPress = () =>{} }) {
     return (
         <View style={{ flexDirection: 'row' }}>
 
@@ -44,33 +45,33 @@ function RecentListItem({ item, editMode }) {
             <View style={{ flex: 9, justifyContent: 'space-between', flexDirection: 'row', height: 50, paddingHorizontal: 5, borderBottomWidth: 0.75, borderColor: "#d1d1d1" }}>
 
                 <View style={{ flex: 5, alignSelf: 'center', alignContent: 'flex-start' }}>
-                    <Text style={{ alignSelf: 'flex-start', fontSize: 18, fontWeight: '600', color: `${(item.missed) ? "#ff3d3d" : "black"}` }}>{item.key}</Text>
+                    <Text style={{ alignSelf: 'flex-start', fontSize: 18, fontWeight: '600', color: `${(item.missed) ? "#ff3d3d" : "black"}` }}>{item.name}</Text>
                     <Text style={{ alignSelf: 'flex-start', color: "#bfbfbf" }}>{item.area}</Text>
                 </View>
                 <Text style={{ flex: 2, alignSelf: 'center', fontWeight: '400', textAlign: 'right', color: "#a3a3a3" }}>{item.time}</Text>
-                <View style={{ flex: 1, alignSelf: 'center' }}>
+                <TouchableOpacity onPress={onPress} style={{ flex: 1, alignSelf: 'center' }}>
                     <Ionicons style={{ alignSelf: 'flex-end', marginRight: 5 }} color="#0084ff" name="information-circle-outline" size={22} />
-                </View>
+                </TouchableOpacity>
 
             </View>
         </View>
     )
 }
 
+function RecentList({navigation}) {
 
-function Recents() {
 
     const [allCalls, setAllCalls] = useState({
         data: [
-            { key: '055 756 4654', time: "11:12 AM", called: false, missed: false, area: "Ghana", number: "+233 24 236 5898" },
-            { key: 'Mercedex AMG GTR', time: "12:59pm", called: true, missed: true, area: "Whatsapp Audio", number: "+233 20 236 5898"},
-            { key: 'Mum', time: "Yesterday", called: false, missed: false, area: "Ghana", number: "+233 26 236 5898" },
-            { key: 'Emmanuel Ashitey', time: "Yesterday", called: true, missed: true, area: "Mobile", number: "+233 50 236 5898" },
-            { key: '055 134 2357 (2)', time: "Yesterday", called: false, missed: true, area: "Ghana", number: "+233 23 555 7711" },
-            { key: '030 313 3009', time: "Yesterday", called: false, missed: true, area: "Ghana", number: "+233 27 236 5898" },
-            { key: '059 221 4017', time: "Yesterday", called: false, missed: false, area: "Ghana", number: "+233 27 236 1144" },
-            { key: 'Mrs. Matilda S. Wilson', time: "Yesterday", called: false, missed: false, area: "home", number: "+233 24 222 0055" },
-            { key: 'Michael Agbo Soli (2)', time: "Yesterday", called: false, missed: false, area: "mobile", number: "+233 23 252 1117" },
+            { name: '055 756 4654', time: "11:12 AM", called: false, missed: false, area: "Ghana", number: "+233 24 236 5898" },
+            { name: 'Mercedex AMG GTR', time: "12:59pm", called: true, missed: true, area: "Whatsapp Audio", number: "+233 20 236 5898" },
+            { name: 'Mum', time: "Yesterday", called: false, missed: false, area: "Ghana", number: "+233 26 236 5898" },
+            { name: 'Emmanuel Ashitey', time: "Yesterday", called: true, missed: true, area: "Mobile", number: "+233 50 236 5898" },
+            { name: '055 134 2357', time: "Yesterday", called: false, missed: true, area: "Ghana", number: "+233 23 555 7711" },
+            { name: '030 313 3009', time: "Yesterday", called: false, missed: true, area: "Ghana", number: "+233 27 236 5898" },
+            { name: '059 221 4017', time: "Yesterday", called: false, missed: false, area: "Ghana", number: "+233 27 236 1144" },
+            { name: 'Mrs. Matilda S. Wilson', time: "Yesterday", called: false, missed: false, area: "home", number: "+233 24 222 0055" },
+            { name: 'Michael Agbo Soli', time: "Yesterday", called: false, missed: false, area: "mobile", number: "+233 23 252 1117" },
         ]
     })
 
@@ -109,6 +110,10 @@ function Recents() {
         }
     }
 
+    const OpenUserView = (userData) => {
+        navigation.navigate('recent-call', userData)
+    }
+
     return (
 
         <SafeAreaView style={{ ...styles.container }}>
@@ -143,7 +148,7 @@ function Recents() {
                             (editMode)
                                 ?
                                 <TouchableOpacity onPress={() => setEditMode(!editMode)} style={{ flexDirection: 'row', flex: 1, justifyContent: 'flex-end' }}>
-                                    <Text style={{ fontSize: 20, alignSelf: 'center', color: "#3385ff",fontWeight: "600" }}>Done</Text>
+                                    <Text style={{ fontSize: 20, alignSelf: 'center', color: "#3385ff", fontWeight: "600" }}>Done</Text>
                                 </TouchableOpacity>
                                 :
                                 <TouchableOpacity onPress={() => setEditMode(!editMode)} style={{ flexDirection: 'row', flex: 1, justifyContent: 'flex-end' }}>
@@ -160,12 +165,30 @@ function Recents() {
                 </View>
                 <FlatList
                     data={visibleCalls.data}
-                    renderItem={({ item }) => <RecentListItem editMode={editMode} item={item} />}
+                    renderItem={({ item }) => <RecentListItem onPress={()=>OpenUserView(item)} editMode={editMode} item={item} />}
+                    keyExtractor={(item, index) => index.toString()}
                 />
 
             </View>
         </SafeAreaView>
+    )
+}
 
+
+
+function Recents() {
+    return(
+        <Recent.Navigator 
+        screenOptions={{
+            headerTitle:"",
+            headerTransparent:true,
+            headerBackTitle: "Recents"
+        }}
+        initialRouteName="recent"
+        >
+            <Recent.Screen name="recent" component={RecentList} />
+            <Recent.Screen name="recent-call" component={UserView} />
+        </Recent.Navigator>
     )
 }
 
