@@ -120,7 +120,7 @@ function UserView({ route, navigation }) {
 
             <ScrollView contentContainerStyle={{ paddingBottom: 20, paddingHorizontal: (route.name === "recent-call") ? 10 : 0 }} showsVerticalScrollIndicator={false}>
                 <View style={{ marginTop: 15 }}>
-                    <ContactNumber area="home" number={number} />
+                    <ContactNumber area={area} number={number} />
                 </View>
 
                 {

@@ -7,6 +7,7 @@ import { FlatList } from 'react-native-gesture-handler';
 import * as Animatable from 'react-native-animatable';
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import { ContactList } from './Contacts';
+import UserView from '../components/ContactUserView';
 
 let device_width = Dimensions.get("window").width;
 let device_height = Dimensions.get("window").height;
@@ -18,7 +19,7 @@ const DISABLED_COLOR = "#8E8E8F"
 const FavoriteStack = createStackNavigator();
 
 
-function FavoriteListItem({ item, editMode }) {
+function FavoriteListItem({ item, editMode, _onPress }) {
     return (
         <View style={{ flexDirection: 'row' }}>
 
@@ -49,7 +50,7 @@ function FavoriteListItem({ item, editMode }) {
             </View>
 
 
-            <View style={{ flex: 9, justifyContent: 'space-between', flexDirection: 'row', height: 65, paddingHorizontal: 5, borderBottomWidth: 0.75, borderColor: "#d1d1d1" }}>
+            <TouchableOpacity activeOpacity={1} onPress={_onPress} style={{ flex: 9, justifyContent: 'space-between', flexDirection: 'row', height: 65, paddingHorizontal: 5, borderBottomWidth: 0.75, borderColor: "#d1d1d1" }}>
 
                 <View style={{ flex: 5, alignSelf: 'center', alignContent: 'flex-start', justifyContent: 'space-around' }}>
                     <Text style={{ alignSelf: 'flex-start', fontSize: 18, fontWeight: '600', color: "black" }}>{item.name}</Text>
@@ -67,11 +68,13 @@ function FavoriteListItem({ item, editMode }) {
                                 <FontAwesome5 style={{ alignSelf: 'flex-end', marginRight: 5 }} name="grip-lines" size={18} color={DISABLED_COLOR} />
                             </Animatable.View>
                             :
-                            <Ionicons style={{ alignSelf: 'flex-end', marginRight: 5 }} color="#0084ff" name="information-circle-outline" size={22} />
+                            <View>
+                                <Ionicons style={{ alignSelf: 'flex-end', marginRight: 5 }} color="#0084ff" name="information-circle-outline" size={22} />
+                            </View>
                     }
                 </View>
 
-            </View>
+            </TouchableOpacity>
         </View>
     )
 }
@@ -81,15 +84,20 @@ function FavoritesList({ navigation }) {
 
     const [allFavorites, setAllFavories] = useState({
         data: [
-            { name: "Mercedex AMG GTR", area: "mobile", profileChars: "MG" },
-            { name: "Elvis Agbesi", area: "mobile", profileChars: "EA" },
-            { name: "Emmanuel Ashitey", area: "Whatsapp Audio", profileChars: "EA" },
-            { name: "Mum", area: "home", profileChars: "M" },
-            { name: "Michael Agbo Soli", area: "work", profileChars: "MS" },
+            { name: "Mercedex AMG GTR", area: "mobile", profileChars: "MG", number: "+233 24 236 5898" },
+            { name: "Elvis Agbesi", area: "mobile", profileChars: "EA", number: "+233 20 236 5898" },
+            { name: "Emmanuel Ashitey", area: "Whatsapp Audio", profileChars: "EA", number: "+233 50 236 5898" },
+            { name: "Mum", area: "home", profileChars: "M", number: "+233 23 555 7711" },
+            { name: "Michael Agbo Soli", area: "work", profileChars: "MS", number: "+233 27 236 5898" },
         ]
     })
 
     const [editMode, setEditMode] = useState(false)
+
+    const OpenUserView = (userData) => {
+        navigation.navigate('FavoriteUser', userData)
+    }
+
 
     return (
         <SafeAreaView style={{}}>
@@ -113,7 +121,7 @@ function FavoritesList({ navigation }) {
                     <View>
                         <FlatList
                             data={allFavorites.data}
-                            renderItem={({ item, index }) => <FavoriteListItem key={item.name + index} editMode={editMode} item={item} />}
+                            renderItem={({ item, index }) => <FavoriteListItem _onPress={() => OpenUserView(item)} key={item.name + index} editMode={editMode} item={item} />}
                             keyExtractor={(item, index) => index.toString()}
                         />
                     </View>
@@ -134,17 +142,18 @@ function Favorites() {
                 cardOverlayEnabled: true,
                 headerTitle: "",
                 ...TransitionPresets.ModalPresentationIOS,
-                headerBackground:()=>(
-                    <View style={{backgroundColor:"#ebebeb", flex:1, justifyContent: 'center',height:50}}>
-                        <Text style={{fontSize: 15,textAlign:"center"}}>Choose a contact to add to favorites</Text>
+                headerBackground: () => (
+                    <View style={{ backgroundColor: "#ebebeb", flex: 1, justifyContent: 'center', height: 50 }}>
+                        <Text style={{ fontSize: 15, textAlign: "center" }}>Choose a contact to add to favorites</Text>
                     </View>
                 ),
-                headerLeft: () =>(<></>)
-                
+                headerLeft: () => (<></>)
+
             }}
         >
-            <FavoriteStack.Screen name="FavoriteList" options={{headerShown:false}} component={FavoritesList} />
+            <FavoriteStack.Screen name="FavoriteList" options={{ headerShown: false }} component={FavoritesList} />
             <FavoriteStack.Screen name="AddFavorites" component={ContactList} />
+            <FavoriteStack.Screen name="FavoriteUser" options={{headerShown:false}} component={UserView} />
         </FavoriteStack.Navigator>
     )
 }
