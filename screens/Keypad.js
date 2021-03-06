@@ -87,18 +87,17 @@ function KeyPad() {
         await sound.playAsync();
 
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium).then(res => {
-            console.log("Vibration made in keypad")
+            // console.log("Vibration made in keypad")
         }).catch(e => {
             console.log("An error occured")
         })
-        
+
     }
 
     useEffect(() => {
         return sound
             ? () => {
-                console.log("unloading sound from mem")
-                sound.unloadAsync
+                sound.unloadAsync()
             }
             : undefined
     }, [sound])
@@ -153,7 +152,9 @@ function KeyPad() {
                             (dial.number === "") ?
                                 <Text></Text>
                                 :
-                                <Text style={{ textAlign: 'center', fontSize: 20, color: '#0288f5' }}>Add contact</Text>
+                                <TouchableOpacity>
+                                    <Text style={{ textAlign: 'center', fontSize: 20, color: '#0288f5' }}>Add contact</Text>
+                                </TouchableOpacity>
                         }
 
                     </View>
