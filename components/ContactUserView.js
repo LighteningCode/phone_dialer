@@ -29,7 +29,7 @@ function ListItem({ textContent, fontSize = 16, style = {}, active = true, dange
 }
 
 
-function UserView({ route,navigation }) {
+function UserView({ route, navigation }) {
 
     const [firstChar, setFirstChar] = useState()
     const [lastChar, setLastChar] = useState()
@@ -59,7 +59,11 @@ function UserView({ route,navigation }) {
 
     useEffect(() => {
         const subscribe = navigation.addListener('focus', () => {
-            StatusBar.setBarStyle("light-content")
+            if (route.name.includes("recent")) {
+                StatusBar.setBarStyle("dark-content")
+            }else{
+                StatusBar.setBarStyle("light-content")
+            }
         });
         return subscribe;
     }, [navigation])
@@ -85,6 +89,8 @@ function UserView({ route,navigation }) {
         </View>
     )
 
+    var reg = new RegExp('^[0-9]+$');
+
     return (
         <SafeAreaView style={{ paddingHorizontal: 10, flex: 1, }}>
             <View style={{ alignSelf: 'center', marginTop: 10, marginBottom: 30, flexDirection: 'column' }}>
@@ -92,31 +98,54 @@ function UserView({ route,navigation }) {
                     style={{ width: 80, height: 80, borderRadius: 40, justifyContent: 'center', flexDirection: 'row', alignSelf: 'center', marginBottom: 10 }}
                     colors={["#bdbdbd", "#9c9c9c", "#9c9c9c"]}
                 >
-                    <Text style={{ alignSelf: 'center', fontSize: 40, fontWeight: 'bold', color: 'white' }}>{processChars(name)}</Text>
+                    {
+                        (!reg.test(name.replace(/\s/g, '')))
+                            ?
+                            <Text style={{ alignSelf: 'center', fontSize: 40, fontWeight: 'bold', color: 'white' }}>{processChars(name)}</Text>
+                            :
+                            <FontAwesome style={{ alignSelf: 'center', fontSize: 100, fontWeight: 'bold', color: 'white' }} name="user" size={12} color="white" />
+                    }
                 </LinearGradient>
 
                 <Text style={{ fontSize: 35 }}>{name}</Text>
             </View>
 
 
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10, paddingHorizontal: (name !== "recent-call") ? 10 : 0 }}>
                 <CallOption text="message" icon={'chatbox-ellipses'} />
                 <CallOption text="call" icon={'md-call'} />
                 <CallOption text="video" icon={'videocam'} />
                 <CallOption text="mail" icon={'mail'} active={false} />
             </View>
 
-            <ScrollView contentContainerStyle={{ paddingBottom: 20 }} showsVerticalScrollIndicator={false}>
+            <ScrollView contentContainerStyle={{ paddingBottom: 20, paddingHorizontal: (name !== "recent-call") ? 10 : 0 }} showsVerticalScrollIndicator={false}>
                 <View style={{ marginTop: 15 }}>
                     <ContactNumber area="home" number={number} />
                 </View>
 
-                <View style={{ backgroundColor: 'white', borderRadius: 10, paddingVertical: 13, paddingHorizontal: 15, marginTop: 15, height: 100 }}>
-                    <Text>Notes</Text>
-                    <TextInput multiline={true} />
-                </View>
+                {
+                    (name !== "recent-call")
+                        ?
+                        <View style={{ backgroundColor: 'white', borderRadius: 10, paddingVertical: 13, paddingHorizontal: 15, marginTop: 15, height: 100 }}>
+                            <Text>Notes</Text>
+                            <TextInput multiline={true} />
+                        </View>
+                        :
+                        <View style={{ backgroundColor: 'white', borderRadius: 10, paddingVertical: 13, paddingHorizontal: 15, marginTop: 15, height: 100 }}>
+                            <Text>Today</Text>
+                            <Text>1:55 PM Missed Call</Text>
+                        </View>
+                }
+
 
                 <InputGroup>
+                {
+                    (reg.test(name.replace(/\s/g, ''))) 
+                    ?
+                    <ListItem textContent={"Add Contact"} fontSize={18} style={{ borderBottomWidth: 0.75, paddingVertical: 12 }} />
+                    :
+                    null
+                }
                     <ListItem textContent={"Send Message"} fontSize={18} style={{ borderBottomWidth: 0.75, paddingVertical: 12 }} />
                     <ListItem textContent={"Share Contact"} fontSize={18} style={{ borderBottomWidth: 0.75, paddingVertical: 12 }} />
                     <ListItem textContent={"Add To Favorites"} fontSize={18} style={{ paddingVertical: 12 }} />
